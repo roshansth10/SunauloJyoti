@@ -39,18 +39,25 @@ const STEPS = [
 export default function ProductionProcess() {
   return (
     <section className="relative overflow-hidden bg-white py-20 sm:py-28">
-      {/* Floating Leaf Accents */}
-      <div className="pointer-events-none absolute left-4 sm:left-12 top-16 w-10 sm:w-16 opacity-80">
-        <Image src="/images/a1.jpeg" alt="" width={64} height={64} className="object-contain" />
+      {/* Exact Transparent Leaf Accents matching design locations */}
+      {/* Top Left Leaf */}
+      <div className="pointer-events-none absolute left-0 top-[4%] w-24 sm:w-36 md:w-48 lg:w-56 opacity-90 z-0">
+        <Image src="/images/crop4.png" alt="" width={537} height={915} className="object-contain object-left-top" />
       </div>
-      <div className="pointer-events-none absolute left-4 sm:left-8 top-[38%] w-10 sm:w-14 opacity-75">
-        <Image src="/images/a2.jpeg" alt="" width={56} height={56} className="object-contain" />
+
+      {/* Mid Left Leaf */}
+      <div className="pointer-events-none absolute left-0 top-[38%] w-24 sm:w-36 md:w-44 lg:w-52 opacity-90 z-0">
+        <Image src="/images/crop5.png" alt="" width={604} height={725} className="object-contain object-left-center" />
       </div>
-      <div className="pointer-events-none absolute right-4 sm:right-10 top-[58%] w-12 sm:w-16 opacity-80">
-        <Image src="/images/a3.jpeg" alt="" width={64} height={64} className="object-contain" />
+
+      {/* Mid Right Leaf */}
+      <div className="pointer-events-none absolute right-0 top-[22%] w-28 sm:w-44 md:w-56 lg:w-64 opacity-90 z-0">
+        <Image src="/images/crop3.png" alt="" width={881} height={1310} className="object-contain object-right-center" />
       </div>
-      <div className="pointer-events-none absolute right-6 sm:right-12 bottom-32 w-12 sm:w-20 opacity-80">
-        <Image src="/images/a4.jpeg" alt="" width={80} height={80} className="object-contain" />
+
+      {/* Bottom Right Leaf Cluster */}
+      <div className="pointer-events-none absolute right-2 sm:right-6 md:right-10 bottom-[8%] w-28 sm:w-40 md:w-52 lg:w-60 opacity-90 z-0">
+        <Image src="/images/crop6.png" alt="" width={584} height={652} className="object-contain object-right-bottom" />
       </div>
 
       <div className="container-px mx-auto max-w-5xl relative z-10">
