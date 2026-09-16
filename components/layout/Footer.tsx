@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const COLUMNS = [
   {
@@ -32,16 +33,22 @@ export default function Footer() {
   return (
     <footer className="bg-footer-gradient text-white">
       <div className="container-px mx-auto grid max-w-7xl gap-8 py-10 sm:gap-10 sm:py-14 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-lg flex-shrink-0">
-              🔥
-            </span>
-            <span className="font-display text-lg font-bold">SUNAULO JYOTI</span>
-          </div>
+        <div className="flex flex-col gap-4">
+          <Link href="/" className="inline-block self-start">
+            <Image
+              src="/images/logo.png"
+              alt="Sunaulo Jyoti"
+              width={240}
+              height={110}
+              className="h-16 sm:h-20 w-auto object-contain mix-blend-multiply"
+            />
+          </Link>
           <p className="max-w-xs text-sm text-white/85 leading-relaxed">
             Bringing authentic flavor to every kitchen with pure, hygienically
             processed spices crafted the traditional way.
+          </p>
+          <p className="text-xs text-white/75 font-medium tracking-wide">
+            Bharatpur-05, Chitwan
           </p>
         </div>
 

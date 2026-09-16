@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -18,14 +19,16 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-white/95 backdrop-blur-sm">
-      <div className="container-px mx-auto flex h-16 sm:h-20 max-w-7xl items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 sm:gap-2.5">
-          <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-brand-orange text-base sm:text-lg flex-shrink-0">
-            🔥
-          </span>
-          <span className="font-display text-base sm:text-lg font-bold tracking-wide text-brand-dark truncate">
-            SUNAULO JYOTI
-          </span>
+      <div className="container-px mx-auto flex h-22 sm:h-28 max-w-7xl items-center justify-between">
+        <Link href="/" className="flex items-center py-1">
+          <Image
+            src="/images/logo.png"
+            alt="Sunaulo Jyoti"
+            width={240}
+            height={110}
+            priority
+            className="h-16 sm:h-20 md:h-22 w-auto object-contain origin-left"
+          />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
