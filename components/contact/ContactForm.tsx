@@ -58,91 +58,120 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-5">
       {!accessKey && (
-        <p className="rounded-md bg-card-yellow px-4 py-3 text-xs text-brand-dark">
+        <p className="rounded-xl bg-card-yellow px-4 py-2.5 text-xs text-brand-dark text-center">
           Set <code className="font-mono">NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY</code> in
-          your environment to enable form delivery. Get a free key at{" "}
-          <a
-            href="https://web3forms.com"
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
-          >
-            web3forms.com
-          </a>
-          .
+          your environment to enable form delivery.
         </p>
       )}
 
-      <input type="hidden" name="subject" value="New message from Sunaulo Jyoti website" />
+      <input type="hidden" name="subject" value="New inquiry from Sunaulo Jyoti website" />
       <input type="hidden" name="from_name" value="Sunaulo Jyoti Website" />
       {/* Honeypot field to reduce spam */}
       <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="name" className="text-sm font-medium text-brand-dark">
-            Name
-          </label>
+      {/* Row 1: First Name & Last Name */}
+      <div className="grid gap-3.5 sm:gap-5 sm:grid-cols-2">
+        <div>
           <input
-            id="name"
-            name="name"
+            id="firstName"
+            name="firstName"
             type="text"
+            placeholder="First Name *"
             required
-            className="rounded-lg border border-black/10 px-4 py-2.5 text-base sm:text-sm outline-none focus:border-brand-orange"
+            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 sm:py-3.5 text-base sm:text-sm text-neutral-800 placeholder-neutral-400 outline-none transition-colors focus:border-brand-orange focus:ring-1 focus:ring-brand-orange"
           />
         </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-sm font-medium text-brand-dark">
-            Email
-          </label>
+        <div>
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            placeholder="Last Name *"
+            required
+            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 sm:py-3.5 text-base sm:text-sm text-neutral-800 placeholder-neutral-400 outline-none transition-colors focus:border-brand-orange focus:ring-1 focus:ring-brand-orange"
+          />
+        </div>
+      </div>
+
+      {/* Row 2: Email & Phone Number */}
+      <div className="grid gap-3.5 sm:gap-5 sm:grid-cols-2">
+        <div>
           <input
             id="email"
             name="email"
             type="email"
+            placeholder="Email *"
             required
-            className="rounded-lg border border-black/10 px-4 py-2.5 text-base sm:text-sm outline-none focus:border-brand-orange"
+            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 sm:py-3.5 text-base sm:text-sm text-neutral-800 placeholder-neutral-400 outline-none transition-colors focus:border-brand-orange focus:ring-1 focus:ring-brand-orange"
+          />
+        </div>
+        <div>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="Phone Number *"
+            required
+            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 sm:py-3.5 text-base sm:text-sm text-neutral-800 placeholder-neutral-400 outline-none transition-colors focus:border-brand-orange focus:ring-1 focus:ring-brand-orange"
           />
         </div>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="phone" className="text-sm font-medium text-brand-dark">
-          Phone (optional)
+      {/* Row 3: How can we help you? dropdown */}
+      <div className="flex flex-col gap-1.5 text-left">
+        <label htmlFor="helpTopic" className="text-xs sm:text-sm font-semibold text-[#1E1E1E]">
+          How can we help you?
         </label>
-        <input
-          id="phone"
-          name="phone"
-          type="tel"
-          className="rounded-lg border border-black/10 px-4 py-2.5 text-base sm:text-sm outline-none focus:border-brand-orange"
-        />
-      </div>
-
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="message" className="text-sm font-medium text-brand-dark">
-          Message
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={5}
-          required
-          className="rounded-lg border border-black/10 px-4 py-2.5 text-base sm:text-sm outline-none focus:border-brand-orange"
-        />
+        <div className="relative">
+          <select
+            id="helpTopic"
+            name="helpTopic"
+            defaultValue=""
+            required
+            className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 sm:py-3.5 text-base sm:text-sm text-neutral-700 outline-none transition-colors focus:border-brand-orange focus:bg-white focus:ring-1 focus:ring-brand-orange cursor-pointer"
+          >
+            <option value="" disabled>
+              Select any option
+            </option>
+            <option value="Product Inquiry">Product Inquiry</option>
+            <option value="Bulk / Wholesale Order">Bulk / Wholesale Order</option>
+            <option value="Distributorship Opportunity">Distributorship Opportunity</option>
+            <option value="Feedback & Suggestions">Feedback & Suggestions</option>
+            <option value="General Support">General Support</option>
+          </select>
+          <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+        </div>
       </div>
 
       {status === "error" && (
-        <p className="text-sm text-red-600">{errorMessage}</p>
+        <p className="text-sm text-red-600 text-center">{errorMessage}</p>
       )}
 
-      <button
-        type="submit"
-        disabled={status === "submitting"}
-        className="mt-2 inline-flex min-h-[44px] items-center justify-center rounded-lg bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark disabled:opacity-60 shadow-sm"
-      >
-        {status === "submitting" ? "Sending..." : "Send Message"}
-      </button>
+      {/* Row 4: Centered Submit Button */}
+      <div className="flex justify-center pt-2 sm:pt-4">
+        <button
+          type="submit"
+          disabled={status === "submitting"}
+          className="w-full sm:w-64 min-h-[46px] rounded-xl bg-gradient-to-r from-[#EA8C1C] to-[#E07A0B] py-3 sm:py-3.5 px-8 text-center text-sm sm:text-base font-semibold text-white shadow-md transition-all duration-300 hover:from-[#D97706] hover:to-[#B45309] hover:shadow-lg disabled:opacity-60 transform hover:-translate-y-0.5"
+        >
+          {status === "submitting" ? "Submitting..." : "Submit"}
+        </button>
+      </div>
     </form>
   );
 }
