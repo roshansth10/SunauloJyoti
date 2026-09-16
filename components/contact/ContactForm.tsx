@@ -59,12 +59,6 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-5">
-      {!accessKey && (
-        <p className="rounded-xl bg-card-yellow px-4 py-2.5 text-xs text-brand-dark text-center">
-          Set <code className="font-mono">NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY</code> in
-          your environment to enable form delivery.
-        </p>
-      )}
 
       <input type="hidden" name="subject" value="New inquiry from Sunaulo Jyoti website" />
       <input type="hidden" name="from_name" value="Sunaulo Jyoti Website" />
