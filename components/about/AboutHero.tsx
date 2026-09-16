@@ -3,10 +3,12 @@ import Link from "next/link";
 export default function AboutHero() {
   return (
     <section
-      className="relative w-full overflow-hidden bg-cover bg-center py-14 sm:py-24 lg:py-32"
+      className="relative w-full overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/images/top-about.jpeg')" }}
     >
-      <div className="relative container-px mx-auto max-w-3xl text-center flex flex-col items-center">
+      {/* Overlay so text is readable */}
+      <div className="absolute inset-0 bg-black/20" />
+      <div className="relative container-px mx-auto max-w-3xl text-center flex flex-col items-center py-20 sm:py-28 lg:py-36 min-h-[320px] sm:min-h-[420px] lg:min-h-[520px] justify-center">
         <h1 className="font-display text-2xl min-[380px]:text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#2D1B08] mb-3">
           About Jyoti Foods
         </h1>

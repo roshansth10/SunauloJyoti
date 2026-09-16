@@ -73,9 +73,9 @@ export default function ProductionProcess() {
 
         {/* Process Steps */}
         <div className="relative">
-          {/* Desktop SVG Dotted Curved Line */}
+          {/* SVG Dotted Curved Line — visible on all screens */}
           <svg
-            className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
+            className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 800 1450"
             fill="none"
             preserveAspectRatio="none"
@@ -89,24 +89,24 @@ export default function ProductionProcess() {
           </svg>
 
           {/* Steps List */}
-          <div className="flex flex-col gap-8 sm:gap-12 md:gap-24 relative z-10">
+          <div className="flex flex-col gap-8 sm:gap-16 md:gap-24 relative z-10">
             {STEPS.map((step, idx) => {
               const isLeft = step.side === "left";
               return (
                 <div key={step.title} className="flex flex-col items-center">
                   <div
-                    className={`w-full flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-8 md:gap-10 ${
-                      isLeft ? "md:flex-row" : "md:flex-row-reverse"
+                    className={`w-full flex flex-row items-center justify-between gap-3 sm:gap-8 md:gap-10 ${
+                      isLeft ? "flex-row" : "flex-row-reverse"
                     }`}
                   >
                     {/* Circle Image Side */}
-                    <div className="w-full md:w-1/2 flex justify-center">
-                      <div className="relative w-36 h-36 min-[400px]:w-44 min-[400px]:h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full overflow-hidden shadow-md md:shadow-lg border-4 border-white ring-1 ring-black/5 group flex-shrink-0 transition-transform duration-500 hover:scale-105">
+                    <div className="w-1/2 flex justify-center">
+                      <div className="relative w-28 h-28 min-[400px]:w-36 min-[400px]:h-36 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full overflow-hidden shadow-md border-4 border-white ring-1 ring-black/5 group flex-shrink-0 transition-transform duration-500 hover:scale-105">
                         <Image
                           src={step.image}
                           alt={step.title}
                           fill
-                          sizes="(min-width: 768px) 240px, 176px"
+                          sizes="(min-width: 768px) 240px, (min-width: 400px) 144px, 112px"
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       </div>
@@ -114,26 +114,21 @@ export default function ProductionProcess() {
 
                     {/* Text Description Side */}
                     <div
-                      className={`w-full md:w-1/2 text-center ${
-                        isLeft ? "md:text-left md:pl-4" : "md:text-left md:pr-4"
+                      className={`w-1/2 ${
+                        isLeft ? "text-left pl-1 sm:pl-4" : "text-left pr-1 sm:pr-4"
                       }`}
                     >
-                      <span className="inline-block md:hidden text-xs font-bold uppercase tracking-wider text-brand-orange mb-1">
+                      <span className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand-orange mb-1">
                         Step 0{idx + 1}
                       </span>
-                      <h3 className="font-display text-lg sm:text-xl font-bold text-[#1E1E1E]">
+                      <h3 className="font-display text-sm sm:text-xl font-bold text-[#1E1E1E] leading-snug">
                         {step.title}
                       </h3>
-                      <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-xs mx-auto md:mx-0">
+                      <p className="mt-1 sm:mt-2 text-[11px] sm:text-sm text-neutral-600 leading-relaxed max-w-xs">
                         {step.description}
                       </p>
                     </div>
                   </div>
-
-                  {/* Mobile connecting dotted line between steps */}
-                  {idx < STEPS.length - 1 && (
-                    <div className="h-8 w-0.5 border-l-2 border-dashed border-[#D3C7B5] my-2 md:hidden" />
-                  )}
                 </div>
               );
             })}
