@@ -41,32 +41,32 @@ export default function ProductionProcess() {
     <section className="relative overflow-hidden bg-white py-20 sm:py-28">
       {/* Exact Transparent Leaf Accents matching design locations */}
       {/* Top Left Leaf */}
-      <div className="pointer-events-none absolute left-0 top-[4%] w-24 sm:w-36 md:w-48 lg:w-56 opacity-90 z-0">
+      <div className="pointer-events-none absolute left-0 top-[4%] w-16 sm:w-28 md:w-48 lg:w-56 opacity-30 md:opacity-90 z-0">
         <Image src="/images/crop4.png" alt="" width={537} height={915} className="object-contain object-left-top" />
       </div>
 
       {/* Mid Left Leaf */}
-      <div className="pointer-events-none absolute left-0 top-[38%] w-24 sm:w-36 md:w-44 lg:w-52 opacity-90 z-0">
+      <div className="pointer-events-none absolute left-0 top-[38%] w-16 sm:w-28 md:w-44 lg:w-52 opacity-30 md:opacity-90 z-0">
         <Image src="/images/crop5.png" alt="" width={604} height={725} className="object-contain object-left-center" />
       </div>
 
       {/* Mid Right Leaf */}
-      <div className="pointer-events-none absolute right-0 top-[22%] w-28 sm:w-44 md:w-56 lg:w-64 opacity-90 z-0">
+      <div className="pointer-events-none absolute right-0 top-[22%] w-20 sm:w-32 md:w-56 lg:w-64 opacity-30 md:opacity-90 z-0">
         <Image src="/images/crop3.png" alt="" width={881} height={1310} className="object-contain object-right-center" />
       </div>
 
       {/* Bottom Right Leaf Cluster */}
-      <div className="pointer-events-none absolute right-2 sm:right-6 md:right-10 bottom-[8%] w-28 sm:w-40 md:w-52 lg:w-60 opacity-90 z-0">
+      <div className="pointer-events-none absolute right-2 sm:right-6 md:right-10 bottom-[8%] w-20 sm:w-32 md:w-52 lg:w-60 opacity-30 md:opacity-90 z-0">
         <Image src="/images/crop6.png" alt="" width={584} height={652} className="object-contain object-right-bottom" />
       </div>
 
       <div className="container-px mx-auto max-w-5xl relative z-10">
         {/* Section Heading */}
-        <div className="text-center mb-16 sm:mb-24">
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1E1E1E]">
+        <div className="text-center mb-12 sm:mb-20 md:mb-24">
+          <h2 className="font-display text-2xl min-[380px]:text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1E1E1E]">
             Our Production Process
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-neutral-500 font-medium max-w-xl mx-auto">
+          <p className="mt-2 sm:mt-3 text-xs sm:text-base text-neutral-500 font-medium max-w-xl mx-auto">
             From carefully selected ingredients to your kitchen.
           </p>
         </div>
@@ -88,52 +88,58 @@ export default function ProductionProcess() {
             />
           </svg>
 
-          {/* Mobile Vertical Dotted Line */}
-          <div className="absolute left-1/2 top-0 bottom-24 -translate-x-1/2 w-0.5 border-l-2 border-dashed border-[#D3C7B5] md:hidden" />
-
           {/* Steps List */}
-          <div className="flex flex-col gap-16 sm:gap-24 relative z-10">
-            {STEPS.map((step) => {
+          <div className="flex flex-col gap-8 sm:gap-12 md:gap-24 relative z-10">
+            {STEPS.map((step, idx) => {
               const isLeft = step.side === "left";
               return (
-                <div
-                  key={step.title}
-                  className={`flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10 ${
-                    isLeft ? "md:flex-row" : "md:flex-row-reverse"
-                  }`}
-                >
-                  {/* Circle Image Side */}
-                  <div className="w-full md:w-1/2 flex justify-center">
-                    <div className="relative w-44 h-44 sm:w-56 sm:h-56 md:w-60 md:h-60 rounded-full overflow-hidden shadow-lg border-4 border-white ring-1 ring-black/5 group flex-shrink-0 transition-transform duration-500 hover:scale-105">
-                      <Image
-                        src={step.image}
-                        alt={step.title}
-                        fill
-                        sizes="(min-width: 768px) 240px, 176px"
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
+                <div key={step.title} className="flex flex-col items-center">
+                  <div
+                    className={`w-full flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-8 md:gap-10 ${
+                      isLeft ? "md:flex-row" : "md:flex-row-reverse"
+                    }`}
+                  >
+                    {/* Circle Image Side */}
+                    <div className="w-full md:w-1/2 flex justify-center">
+                      <div className="relative w-36 h-36 min-[400px]:w-44 min-[400px]:h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full overflow-hidden shadow-md md:shadow-lg border-4 border-white ring-1 ring-black/5 group flex-shrink-0 transition-transform duration-500 hover:scale-105">
+                        <Image
+                          src={step.image}
+                          alt={step.title}
+                          fill
+                          sizes="(min-width: 768px) 240px, 176px"
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Text Description Side */}
+                    <div
+                      className={`w-full md:w-1/2 text-center ${
+                        isLeft ? "md:text-left md:pl-4" : "md:text-left md:pr-4"
+                      }`}
+                    >
+                      <span className="inline-block md:hidden text-xs font-bold uppercase tracking-wider text-brand-orange mb-1">
+                        Step 0{idx + 1}
+                      </span>
+                      <h3 className="font-display text-lg sm:text-xl font-bold text-[#1E1E1E]">
+                        {step.title}
+                      </h3>
+                      <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-xs mx-auto md:mx-0">
+                        {step.description}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Text Description Side */}
-                  <div
-                    className={`w-full md:w-1/2 text-center ${
-                      isLeft ? "md:text-left md:pl-4" : "md:text-left md:pr-4"
-                    }`}
-                  >
-                    <h3 className="font-display text-lg sm:text-xl font-bold text-[#1E1E1E]">
-                      {step.title}
-                    </h3>
-                    <p className="mt-2 text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-xs mx-auto md:mx-0">
-                      {step.description}
-                    </p>
-                  </div>
+                  {/* Mobile connecting dotted line between steps */}
+                  {idx < STEPS.length - 1 && (
+                    <div className="h-8 w-0.5 border-l-2 border-dashed border-[#D3C7B5] my-2 md:hidden" />
+                  )}
                 </div>
               );
             })}
 
             {/* End Point: Home Icon Badge */}
-            <div className="flex flex-col items-center justify-center pt-8">
+            <div className="flex flex-col items-center justify-center pt-4 md:pt-8">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 border-[#A8947C] bg-[#FAF8F5] flex flex-col items-center justify-center shadow-sm text-[#7C6853]">
                 <svg
                   className="w-8 h-8 sm:w-9 sm:h-9"

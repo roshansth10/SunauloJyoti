@@ -90,7 +90,7 @@ export default function ContactForm() {
             name="name"
             type="text"
             required
-            className="rounded-lg border border-black/10 px-4 py-2.5 text-sm outline-none focus:border-brand-orange"
+            className="rounded-lg border border-black/10 px-4 py-2.5 text-base sm:text-sm outline-none focus:border-brand-orange"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -102,7 +102,7 @@ export default function ContactForm() {
             name="email"
             type="email"
             required
-            className="rounded-lg border border-black/10 px-4 py-2.5 text-sm outline-none focus:border-brand-orange"
+            className="rounded-lg border border-black/10 px-4 py-2.5 text-base sm:text-sm outline-none focus:border-brand-orange"
           />
         </div>
       </div>
@@ -115,7 +115,7 @@ export default function ContactForm() {
           id="phone"
           name="phone"
           type="tel"
-          className="rounded-lg border border-black/10 px-4 py-2.5 text-sm outline-none focus:border-brand-orange"
+          className="rounded-lg border border-black/10 px-4 py-2.5 text-base sm:text-sm outline-none focus:border-brand-orange"
         />
       </div>
 
@@ -128,7 +128,7 @@ export default function ContactForm() {
           name="message"
           rows={5}
           required
-          className="rounded-lg border border-black/10 px-4 py-2.5 text-sm outline-none focus:border-brand-orange"
+          className="rounded-lg border border-black/10 px-4 py-2.5 text-base sm:text-sm outline-none focus:border-brand-orange"
         />
       </div>
 
@@ -139,7 +139,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="mt-2 inline-flex items-center justify-center rounded-lg bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark disabled:opacity-60"
+        className="mt-2 inline-flex min-h-[44px] items-center justify-center rounded-lg bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark disabled:opacity-60 shadow-sm"
       >
         {status === "submitting" ? "Sending..." : "Send Message"}
       </button>

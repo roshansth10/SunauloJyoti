@@ -31,11 +31,11 @@ export default function WhyChooseUs() {
           description="Delivering pure, authentic spices crafted with quality, freshness, and tradition in every pack."
         />
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-3">
+        <div className="mt-10 sm:mt-12 grid gap-5 sm:gap-6 grid-cols-1 md:grid-cols-3">
           {FEATURES.map((feature) => (
             <div
               key={feature.title}
-              className={`rounded-xl2 p-8 ${feature.bg}`}
+              className={`rounded-xl2 p-6 sm:p-7 lg:p-8 transition-transform duration-300 hover:-translate-y-1 ${feature.bg}`}
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-xl shadow-sm">
                 {feature.icon}

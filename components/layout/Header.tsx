@@ -17,18 +17,18 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white">
-      <div className="container-px mx-auto flex h-20 max-w-7xl items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange text-lg">
+    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/95 backdrop-blur-sm">
+      <div className="container-px mx-auto flex h-16 sm:h-20 max-w-7xl items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 sm:gap-2.5">
+          <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-brand-orange text-base sm:text-lg flex-shrink-0">
             🔥
           </span>
-          <span className="font-display text-lg font-bold tracking-wide text-brand-dark">
+          <span className="font-display text-base sm:text-lg font-bold tracking-wide text-brand-dark truncate">
             SUNAULO JYOTI
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
           {NAV_LINKS.map((link) => {
             const isActive =
               link.href === "/"
@@ -54,31 +54,43 @@ export default function Header() {
         <div className="hidden lg:block">
           <Link
             href="/contact"
-            className="rounded-full bg-brand-orange px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark"
+            className="rounded-full bg-brand-orange px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark shadow-sm"
           >
             Sign in
           </Link>
         </div>
 
         <button
-          aria-label="Toggle menu"
-          className="flex h-10 w-10 items-center justify-center rounded-md text-brand-dark lg:hidden"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          className="flex h-11 w-11 items-center justify-center rounded-lg text-brand-dark hover:bg-neutral-100 transition-colors lg:hidden"
           onClick={() => setOpen((v) => !v)}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M4 6h16M4 12h16M4 18h16"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          {open ? (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M6 6L18 18M6 18L18 6"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          ) : (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M4 6h16M4 12h16M4 18h16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          )}
         </button>
       </div>
 
       {open && (
-        <div className="border-t border-black/5 bg-white lg:hidden">
-          <nav className="container-px mx-auto flex max-w-7xl flex-col gap-1 py-4">
+        <div className="border-t border-black/5 bg-white shadow-lg lg:hidden transition-all">
+          <nav className="container-px mx-auto flex max-w-7xl flex-col gap-1.5 py-4">
             {NAV_LINKS.map((link) => {
               const isActive =
                 link.href === "/"
@@ -90,23 +102,25 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`rounded-md px-2 py-2.5 text-xs font-semibold uppercase tracking-widest ${
+                  className={`flex items-center min-h-[44px] rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-widest transition-colors ${
                     isActive
-                      ? "bg-brand-cream text-brand-orange"
-                      : "text-neutral-600 hover:bg-brand-cream hover:text-brand-orange"
+                      ? "bg-brand-cream text-brand-orange font-bold"
+                      : "text-neutral-700 hover:bg-neutral-50 hover:text-brand-orange"
                   }`}
                 >
                   {link.label}
                 </Link>
               );
             })}
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-brand-orange px-6 py-2.5 text-center text-sm font-semibold text-white"
-            >
-              Sign in
-            </Link>
+            <div className="pt-2">
+              <Link
+                href="/contact"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-center min-h-[44px] w-full rounded-full bg-brand-orange px-6 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-orange-dark transition-colors"
+              >
+                Sign in
+              </Link>
+            </div>
           </nav>
         </div>
       )}

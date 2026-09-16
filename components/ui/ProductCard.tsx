@@ -25,14 +25,14 @@ export default function ProductCard({
           className="object-cover"
         />
       </div>
-      <div className="flex flex-1 flex-col gap-3 p-5">
+      <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
         <h3 className="font-display text-lg font-semibold text-brand-dark">
           {title}
         </h3>
         <p className="flex-1 text-sm leading-relaxed text-neutral-500">
           {description}
         </p>
-        <Button href={ctaHref} className="self-start px-5 py-2.5 text-xs">
+        <Button href={ctaHref} className="self-start px-5 py-2 text-xs min-h-[40px]">
           Order Now
         </Button>
       </div>

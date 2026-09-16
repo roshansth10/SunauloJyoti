@@ -15,7 +15,7 @@ export default function SectionHeading({
 
   return (
     <div className={`flex flex-col gap-2 ${alignment}`}>
-      <h2 className="font-display text-3xl font-semibold text-brand-dark sm:text-4xl">
+      <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-brand-dark">
         {title}
       </h2>
       {subtitle && (

@@ -32,17 +32,17 @@ export default function SignatureMasala() {
           subtitle="परम्परागत स्वाद, आधुनिक गुणस्तर"
         />
 
-        <div className="mt-12 flex flex-col gap-14">
+        <div className="mt-10 sm:mt-12 flex flex-col gap-10 sm:gap-14">
           {ITEMS.map((item, idx) => {
             const reversed = idx % 2 === 1;
             return (
               <div
                 key={item.title}
-                className={`grid items-center gap-8 lg:grid-cols-2 ${
+                className={`grid items-center gap-6 sm:gap-8 lg:gap-12 lg:grid-cols-2 ${
                   reversed ? "lg:[&>*:first-child]:order-2" : ""
                 }`}
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl2">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl2 shadow-sm">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -51,8 +51,8 @@ export default function SignatureMasala() {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex flex-col gap-4">
-                  <h3 className="font-display text-2xl font-semibold text-brand-dark">
+                <div className="flex flex-col gap-3 sm:gap-4">
+                  <h3 className="font-display text-xl sm:text-2xl font-semibold text-brand-dark">
                     {item.title}
                   </h3>
                   <p className="max-w-md text-sm leading-relaxed text-neutral-500 sm:text-base">

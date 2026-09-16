@@ -34,7 +34,7 @@ const TESTIMONIALS = [
 
 export default function TestimonialsPage() {
   return (
-    <section className="bg-white py-16 sm:py-20">
+    <section className="bg-white py-12 sm:py-20">
       <div className="container-px mx-auto max-w-7xl">
         <SectionHeading
           align="center"
@@ -42,11 +42,11 @@ export default function TestimonialsPage() {
           description="Real feedback from home cooks who have made Jyoti spices part of their kitchen."
         />
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+        <div className="mt-8 sm:mt-12 grid gap-5 sm:gap-6 sm:grid-cols-2">
           {TESTIMONIALS.map((t) => (
             <figure
               key={t.name}
-              className="rounded-xl2 bg-brand-cream/40 p-8 ring-1 ring-black/5"
+              className="rounded-xl2 bg-brand-cream/40 p-6 sm:p-8 ring-1 ring-black/5 shadow-sm"
             >
               <blockquote className="text-sm leading-relaxed text-neutral-600 sm:text-base">
                 &ldquo;{t.quote}&rdquo;

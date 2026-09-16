@@ -7,11 +7,18 @@ html {
 }
 
 body {
-  @apply text-brand-dark antialiased;
+  @apply text-brand-dark antialiased overflow-x-hidden;
 }
 
 @layer utilities {
   .container-px {
-    @apply px-6 sm:px-10 lg:px-16;
+    @apply px-4 min-[420px]:px-6 sm:px-10 lg:px-16;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
