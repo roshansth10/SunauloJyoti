@@ -50,7 +50,7 @@ export default function Footer() {
         </div>
 
         {/* Col 2 — Company links */}
-        <div className="col-span-1 flex flex-col gap-2.5 sm:gap-4">
+        <div className="col-span-1 flex flex-col gap-2.5 sm:gap-4 text-left pl-4 min-[380px]:pl-6 sm:pl-0">
           <h4 className="text-[11px] font-bold uppercase tracking-widest text-[#3B220A]">
             Company
           </h4>
@@ -74,7 +74,7 @@ export default function Footer() {
         </div>
 
         {/* Col 3 — Explore */}
-        <div className="col-span-1 flex flex-col gap-2.5 sm:gap-4">
+        <div className="col-span-1 flex flex-col gap-2.5 sm:gap-4 text-left">
           <h4 className="text-[11px] font-bold uppercase tracking-widest text-[#3B220A]">
             Explore
           </h4>
@@ -98,12 +98,12 @@ export default function Footer() {
         </div>
 
         {/* Col 4 — Contact / HQ */}
-        <div className="col-span-2 sm:col-span-1 flex flex-col items-center sm:items-start text-center sm:text-left gap-2.5 sm:gap-4 pt-1 sm:pt-0">
+        <div className="col-span-2 sm:col-span-1 flex flex-col gap-2.5 sm:gap-4 text-left pt-1 sm:pt-0 pl-4 min-[380px]:pl-6 sm:pl-0">
           <h4 className="text-[11px] font-bold uppercase tracking-widest text-[#3B220A]">
             Get in Touch
           </h4>
-          <ul className="flex flex-col items-center sm:items-start gap-2 sm:gap-3">
-            <li className="flex items-center sm:items-start gap-2 text-xs sm:text-sm text-[#3B220A]/75">
+          <ul className="flex flex-col gap-2 sm:gap-3">
+            <li className="flex items-center gap-2 text-xs sm:text-sm text-[#3B220A]/75">
               <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 text-[#C96F05]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -136,7 +136,7 @@ export default function Footer() {
         <p className="text-[11px] sm:text-xs text-[#3B220A]/70 font-medium text-center sm:text-left">
           © 2026 Jyoti LLC. All rights reserved.
         </p>
-        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-[#3B220A]/75 font-medium">
+        <div className="flex items-center gap-2 text-[11px] sm:text-xs text-[#3B220A]/75 font-medium">
           <span>Made with ❤️ by</span>
           <a
             href="https://dxcreativestudio.vercel.app/"
@@ -148,9 +148,9 @@ export default function Footer() {
             <Image
               src="/images/dxstudio.png"
               alt="DX Studio"
-              width={100}
-              height={33}
-              className="h-4 sm:h-5 w-auto object-contain"
+              width={140}
+              height={46}
+              className="h-6 sm:h-7 w-auto object-contain"
             />
           </a>
         </div>
