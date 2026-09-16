@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   title: "Sunaulo Jyoti | Authentic Nepali Spices",
   description:
     "Bringing authentic flavor to every kitchen. Premium, hygienically processed spice powders and masala blends from Sunaulo Jyoti.",
+  icons: {
+    icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({
