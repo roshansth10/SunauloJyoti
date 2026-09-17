@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-white/95 backdrop-blur-sm">
       <div className="container-px mx-auto flex h-22 sm:h-28 max-w-7xl items-center justify-between">
-        <Link href="/" className="flex items-center py-1">
+        <Link href="/" className="flex flex-1 items-center py-1">
           <Image
             src="/images/logo.png"
             alt="Sunaulo Jyoti"
@@ -54,12 +54,12 @@ export default function Header() {
           })}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden flex-1 justify-end lg:flex">
           <Link
-            href="/contact"
+            href="/products"
             className="rounded-full bg-brand-orange px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-orange-dark shadow-sm"
           >
-            Sign in
+            Shop Now
           </Link>
         </div>
 
@@ -115,15 +115,6 @@ export default function Header() {
                 </Link>
               );
             })}
-            <div className="pt-2">
-              <Link
-                href="/contact"
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-center min-h-[44px] w-full rounded-full bg-brand-orange px-6 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-orange-dark transition-colors"
-              >
-                Sign in
-              </Link>
-            </div>
           </nav>
         </div>
       )}
