@@ -5,6 +5,7 @@ type ButtonProps = {
   href?: string;
   variant?: "solid" | "outline";
   className?: string;
+  target?: string;
   children: React.ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -21,6 +22,7 @@ export default function Button({
   href,
   variant = "solid",
   className = "",
+  target,
   children,
   ...props
 }: ButtonProps) {
@@ -28,7 +30,12 @@ export default function Button({
 
   if (href) {
     return (
-      <Link href={href} className={classes}>
+      <Link
+        href={href}
+        target={target}
+        rel={target === "_blank" ? "noopener noreferrer" : undefined}
+        className={classes}
+      >
         {children}
       </Link>
     );
