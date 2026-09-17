@@ -18,6 +18,23 @@ export default function ContactForm() {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
+    const fields = [
+      { label: "First Name", value: formData.get("firstName") },
+      { label: "Last Name", value: formData.get("lastName") },
+      { label: "Email", value: formData.get("email") },
+      { label: "Phone Number", value: formData.get("phone") },
+      { label: "How can we help you?", value: formData.get("helpTopic") },
+    ];
+
+    const message = fields
+      .map((field) => `${field.label} - ${field.value}`)
+      .join("\n");
+
+    window.open(
+      `https://wa.me/9869246570?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+
     if (accessKey) {
       formData.append("access_key", accessKey);
     }
