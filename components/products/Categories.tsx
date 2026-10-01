@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
 import Image from "next/image";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export interface ProductItem {
   id: string;
@@ -101,9 +101,56 @@ const CATEGORIES = [
   "Szechuan Pepper",
 ];
 
+const getWhatsAppLink = (title: string) =>
+  `https://wa.me/9869246570?text=${encodeURIComponent(
+    `Hey, I would like to order ${title} from Sunaulo Jyoti`
+  )}`;
+
+type ProductTileProps = {
+  product: ProductItem;
+  sizes: string;
+  className?: string;
+};
+
+function ProductTile({ product, sizes, className = "" }: ProductTileProps) {
+  return (
+    <div
+      className={`group flex flex-col justify-between rounded-xl border border-neutral-200/80 bg-white p-3 sm:p-4 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-brand-orange/40 hover:shadow-md ${className}`}
+    >
+      {/* Product packet image container */}
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-white p-2">
+        <Image
+          src={product.image}
+          alt={product.title}
+          fill
+          sizes={sizes}
+          className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+
+      {/* Title & Order button */}
+      <div className="mt-3 flex flex-col items-center text-center">
+        <h3 className="font-display text-sm font-semibold text-brand-dark sm:text-base line-clamp-1">
+          {product.title}
+        </h3>
+        <a
+          href={getWhatsAppLink(product.title)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 flex w-full min-h-[44px] items-center justify-center rounded-lg bg-brand-orange px-2 py-2 text-center text-xs font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95 sm:min-h-0"
+        >
+          Order Now
+        </a>
+      </div>
+    </div>
+  );
+}
+
 export default function Categories() {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [isExpanded, setIsExpanded] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   const filteredProducts = useMemo(() => {
     if (selectedCategory === "All") {
@@ -112,15 +159,32 @@ export default function Categories() {
     return PRODUCT_LIST.filter((p) => p.category === selectedCategory);
   }, [selectedCategory]);
 
-  // Initial visible count matches the single row in the mockup (~4 or 5 items), expandable via View More
-  const visibleProducts = isExpanded
-    ? filteredProducts
-    : filteredProducts.slice(0, 5);
+  // Arrow buttons double as scroll indicators: each hides itself at its end of the row
+  const updateArrows = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    setCanScrollLeft(track.scrollLeft > 4);
+    setCanScrollRight(track.scrollLeft < maxScroll - 4);
+  }, []);
 
-  const getWhatsAppLink = (title: string) => {
-    return `https://wa.me/9869246570?text=${encodeURIComponent(
-      `Hey, I would like to order ${title} from Sunaulo Jyoti`
-    )}`;
+  useEffect(() => {
+    updateArrows();
+    // Re-measure once the images and fonts have settled
+    const raf = requestAnimationFrame(updateArrows);
+    const timer = window.setTimeout(updateArrows, 300);
+    window.addEventListener("resize", updateArrows);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+      window.removeEventListener("resize", updateArrows);
+    };
+  }, [updateArrows, filteredProducts.length]);
+
+  const scrollByPage = (direction: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollBy({ left: direction * track.clientWidth * 0.85, behavior: "smooth" });
   };
 
   return (
@@ -145,7 +209,7 @@ export default function Categories() {
                 type="button"
                 onClick={() => {
                   setSelectedCategory(cat);
-                  setIsExpanded(true);
+                  trackRef.current?.scrollTo({ left: 0, behavior: "smooth" });
                 }}
                 className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                   selectedCategory === cat
@@ -159,65 +223,53 @@ export default function Categories() {
           </div>
         </div>
 
-        {/* Product Cards Row / Grid matching design */}
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 sm:gap-6">
-          {visibleProducts.map((product) => (
-            <div
-              key={product.id}
-              className="group flex flex-col justify-between rounded-xl border border-neutral-200/80 bg-white p-3 sm:p-4 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-brand-orange/40 hover:shadow-md"
-            >
-              {/* Product packet image container */}
-              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-white p-2">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  fill
-                  sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
-                  className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
+        {/* Product cards: one scrollable row, left to right, with arrow controls */}
+        <div className="relative mt-8">
+          <button
+            type="button"
+            onClick={() => scrollByPage(-1)}
+            aria-label="Scroll products left"
+            className={`absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-neutral-200 bg-white text-brand-dark shadow-md transition-opacity hover:text-brand-orange sm:h-10 sm:w-10 ${
+              canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-              {/* Title & Order button */}
-              <div className="mt-3 flex flex-col items-center text-center">
-                <h3 className="font-display text-sm font-semibold text-brand-dark sm:text-base line-clamp-1">
-                  {product.title}
-                </h3>
-                <a
-                  href={getWhatsAppLink(product.title)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 flex w-full min-h-[44px] items-center justify-center rounded-lg bg-brand-orange px-2 py-2 text-center text-xs font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95 sm:min-h-0"
-                >
-                  Order Now
-                </a>
-              </div>
-            </div>
-          ))}
+          <button
+            type="button"
+            onClick={() => scrollByPage(1)}
+            aria-label="Scroll products right"
+            className={`absolute right-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-neutral-200 bg-white text-brand-dark shadow-md transition-opacity hover:text-brand-orange sm:h-10 sm:w-10 ${
+              canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          <div
+            ref={trackRef}
+            onScroll={updateArrows}
+            tabIndex={0}
+            role="region"
+            aria-label="Product categories"
+            className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-px-4 px-4 pb-1 scroll-smooth min-[420px]:-mx-6 min-[420px]:scroll-px-6 min-[420px]:px-6 sm:mx-0 sm:scroll-px-0 sm:px-0 sm:gap-5 lg:gap-6"
+          >
+            {filteredProducts.map((product) => (
+              <ProductTile
+                key={product.id}
+                product={product}
+                sizes="(min-width: 1024px) 20vw, (min-width: 768px) 31vw, (min-width: 640px) 38vw, (min-width: 480px) 46vw, 62vw"
+                className="w-[62%] shrink-0 snap-start min-[480px]:w-[46%] sm:w-[38%] md:w-[31%] lg:w-[calc((100%-6rem)/5)]"
+              />
+            ))}
+          </div>
         </div>
 
-        {/* View More / View Less Toggle matching design */}
-        {filteredProducts.length > 5 && (
-          <div className="mt-8 flex justify-center">
-            <button
-              type="button"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-600 transition-colors hover:text-brand-orange cursor-pointer"
-            >
-              <span>{isExpanded ? "View Less" : "View More"}</span>
-              <svg
-                className={`h-4 w-4 transition-transform duration-200 ${
-                  isExpanded ? "rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          </div>
-        )}
       </div>
     </section>
   );
