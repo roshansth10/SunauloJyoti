@@ -1,31 +1,91 @@
-import SectionHeading from "@/components/ui/SectionHeading";
-import ProductCard from "@/components/ui/ProductCard";
-
-const NEW_ARRIVALS = [
-  {
-    title: "Chiya Masala",
-    description:
-      "A fragrant blend of aromatic spices that brings warmth and authentic taste to every cup of tea.",
-    image: "/images/chiya-masala-jar.webp",
-  },
-  {
-    title: "Mix Masala",
-    description:
-      "An all-purpose blend of premium spices for curries, vegetables, and everyday meals.",
-    image: "/images/mix-masala-packet.webp",
-  },
-];
+import Image from "next/image";
 
 export default function NewArrival() {
-  return (
-    <section className="bg-white py-16 sm:py-20">
-      <div className="container-px mx-auto max-w-7xl">
-        <SectionHeading title="New Arrivals" />
+  const whatsappHref = `https://wa.me/9869246570?text=${encodeURIComponent(
+    "Hello Sunaulo Jyoti, I would like to order the New Arrival Jyoti Special Black Pepper!"
+  )}`;
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2">
-          {NEW_ARRIVALS.map((product) => (
-            <ProductCard key={product.title} {...product} />
-          ))}
+  return (
+    <section className="bg-white py-6 sm:py-10">
+      <div className="container-px mx-auto max-w-7xl">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-[#FCF6D8] shadow-xs">
+          {/* Top-left: image 15 */}
+          <div className="pointer-events-none absolute -top-1 left-0 z-10 sm:left-1 md:left-2">
+            <Image
+              src="/images/Product Img/image 15.png"
+              alt=""
+              width={137}
+              height={240}
+              priority
+              className="h-24 w-auto object-contain sm:h-32 md:h-40 lg:h-48 drop-shadow-xs"
+              aria-hidden
+            />
+          </div>
+
+          {/* Mid-left: image 10 */}
+          <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 left-6 z-10 sm:left-10 md:left-16 lg:left-20">
+            <Image
+              src="/images/Product Img/image 10.png"
+              alt=""
+              width={148}
+              height={191}
+              className="h-20 w-auto object-contain sm:h-28 md:h-36 lg:h-40 drop-shadow-xs"
+              aria-hidden
+            />
+          </div>
+
+          <div className="relative z-20 grid min-h-[380px] sm:min-h-[420px] lg:min-h-[460px] items-center lg:grid-cols-12">
+            {/* Center Content: Centered text and Order Now button */}
+            <div className="flex flex-col items-center justify-center px-6 py-12 text-center lg:col-span-7 lg:pl-16 lg:pr-8">
+              <h2 className="font-display text-3xl font-bold tracking-tight text-[#1F140A] sm:text-4xl md:text-5xl">
+                New Arrival
+              </h2>
+
+              <h3 className="mt-3 sm:mt-4 font-display text-base font-bold text-[#1F140A] sm:text-xl md:text-[22px]">
+                Introducing Jyoti&apos;s Special Black Pepper
+              </h3>
+
+              <p className="mt-2 max-w-md text-xs sm:text-sm md:text-base text-[#6B5E52] leading-relaxed">
+                Crafted with premium spices to make every cup warm, flavorful, and refreshing.
+              </p>
+
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 sm:mt-8 inline-flex items-center justify-center rounded-2xl bg-[#E2872E] px-8 py-2.5 sm:px-10 sm:py-3 text-sm sm:text-base font-semibold text-white shadow-sm transition-all hover:bg-[#C96F05] active:scale-95"
+              >
+                Order Now
+              </a>
+            </div>
+
+            {/* Right side: floating pods (image 100) and woman with spice tray (sasu) */}
+            <div className="relative flex h-full items-end justify-center lg:col-span-5 lg:justify-end">
+              {/* Image 100: floating between center content and sasu's tray */}
+              <div className="pointer-events-none absolute -left-4 sm:-left-8 lg:-left-12 top-1/2 -translate-y-1/2 z-20">
+                <Image
+                  src="/images/Product Img/image 100.png"
+                  alt=""
+                  width={104}
+                  height={104}
+                  className="h-12 w-auto object-contain sm:h-16 md:h-20 lg:h-24 drop-shadow-xs opacity-90"
+                  aria-hidden
+                />
+              </div>
+
+              {/* Sasu image */}
+              <div className="relative aspect-[449/511] w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[440px] pt-4 sm:pt-6">
+                <Image
+                  src="/images/Product Img/sasu.png"
+                  alt="Introducing Jyoti's Special Black Pepper with spice collection"
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 40vw, (min-width: 640px) 50vw, 90vw"
+                  className="object-contain object-bottom"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
