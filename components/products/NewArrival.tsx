@@ -9,27 +9,28 @@ export default function NewArrival() {
     <section className="bg-white py-6 sm:py-10">
       <div className="container-px mx-auto max-w-7xl">
         <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-[#FCF6D8] shadow-xs">
-          {/* Top-left: image 15 */}
-          <div className="pointer-events-none absolute -top-1 left-0 z-10 sm:left-1 md:left-2">
+          {/* Top-left: image 15 (nudged up by the asset's 28.75% transparent top padding
+              so the branch starts flush with the top edge of the banner) */}
+          <div className="pointer-events-none absolute top-0 left-0 z-10">
             <Image
               src="/images/Product Img/image 15.png"
               alt=""
               width={137}
               height={240}
               priority
-              className="h-24 w-auto object-contain sm:h-32 md:h-40 lg:h-48 drop-shadow-xs"
+              className="h-24 w-auto -translate-y-[28.75%] object-contain sm:h-32 md:h-40 lg:h-48 drop-shadow-xs"
               aria-hidden
             />
           </div>
 
-          {/* Mid-left: image 10 */}
-          <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 left-6 z-10 sm:left-10 md:left-16 lg:left-20">
+          {/* Mid-left: image 100 */}
+          <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 left-3 z-10 sm:left-5 md:left-8 lg:left-10">
             <Image
-              src="/images/Product Img/image 10.png"
+              src="/images/Product Img/image 100.png"
               alt=""
-              width={148}
-              height={191}
-              className="h-20 w-auto object-contain sm:h-28 md:h-36 lg:h-40 drop-shadow-xs"
+              width={104}
+              height={104}
+              className="h-16 w-auto object-contain sm:h-20 md:h-24 lg:h-28 drop-shadow-xs opacity-90"
               aria-hidden
             />
           </div>
@@ -68,7 +69,7 @@ export default function NewArrival() {
                   alt=""
                   width={104}
                   height={104}
-                  className="h-12 w-auto object-contain sm:h-16 md:h-20 lg:h-24 drop-shadow-xs opacity-90"
+                  className="h-20 w-auto object-contain sm:h-28 md:h-32 lg:h-40 drop-shadow-xs opacity-90"
                   aria-hidden
                 />
               </div>
