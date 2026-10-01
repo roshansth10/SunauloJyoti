@@ -63,7 +63,7 @@ export default function BestSellingProduct() {
                   alt={product.title}
                   fill
                   sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
-                  className="object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
 
@@ -76,7 +76,7 @@ export default function BestSellingProduct() {
                   href={getWhatsAppLink(product.title)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 w-full rounded-lg bg-brand-orange py-2 text-center text-xs font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95"
+                  className="mt-3 flex w-full min-h-[44px] items-center justify-center rounded-lg bg-brand-orange px-2 py-2 text-center text-xs font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95 sm:min-h-0"
                 >
                   Order Now
                 </a>

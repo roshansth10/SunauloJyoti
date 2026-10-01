@@ -16,7 +16,7 @@ export default function ProductPromoBanner() {
           width={148}
           height={191}
           priority
-          className="h-28 w-auto object-contain sm:h-36 md:h-44 lg:h-52 drop-shadow-xs"
+          className="h-20 w-auto object-contain sm:h-36 md:h-44 lg:h-52 drop-shadow-xs"
           aria-hidden
         />
       </div>
@@ -29,7 +29,7 @@ export default function ProductPromoBanner() {
           width={254}
           height={164}
           priority
-          className="h-24 w-auto object-contain sm:h-32 md:h-40 lg:h-44 drop-shadow-xs"
+          className="h-14 w-auto object-contain sm:h-32 md:h-40 lg:h-44 drop-shadow-xs"
           aria-hidden
         />
       </div>
@@ -74,7 +74,7 @@ export default function ProductPromoBanner() {
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3.5 inline-flex items-center justify-center rounded-md bg-brand-orange px-6 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95"
+          className="mt-3.5 inline-flex min-h-[44px] items-center justify-center rounded-md bg-brand-orange px-6 py-2 text-xs sm:min-h-0 sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95"
         >
           Order Now
         </Link>
