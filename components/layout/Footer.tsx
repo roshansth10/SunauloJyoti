@@ -162,7 +162,7 @@ export default function Footer() {
           © 2026 Jyoti LLC. All rights reserved.
         </p>
         <div className="flex items-center gap-2 text-[11px] sm:text-xs text-[#3B220A]/75 font-medium">
-          <span>Made with ❤️ by</span>
+          <span>Designed &amp; Developed by</span>
           <a
             href="https://dxcreativestudio.vercel.app/"
             target="_blank"
