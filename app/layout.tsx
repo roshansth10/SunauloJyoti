@@ -40,6 +40,8 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col font-sans w-full overflow-x-clip">
         <LenisProvider />
         <Header />
+        {/* Spacer that matches fixed header height so content isn't hidden underneath */}
+        <div className="h-16 sm:h-20 shrink-0" aria-hidden="true" />
         <main className="flex-1 w-full overflow-x-clip">{children}</main>
         <Footer />
         <WhatsAppButton />
