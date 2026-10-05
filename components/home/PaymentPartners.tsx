@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+// Nabil Bank removed per requirement
 const PARTNERS = [
   {
     name: "NIC ASIA Bank",
@@ -18,12 +19,6 @@ const PARTNERS = [
     src: "/images/partners/khalti.webp",
     width: 400,
     height: 180,
-  },
-  {
-    name: "N-Bank by Nabil",
-    src: "/images/partners/nabil.png",
-    width: 750,
-    height: 750,
   },
   {
     name: "connectIPS",
@@ -50,19 +45,22 @@ export default function PaymentPartners() {
           Our Payment Partners
         </h2>
 
-        {/* Partner Logos Row */}
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-14">
+        {/*
+          Mobile: flex-nowrap, logos shrink to fit, guaranteed single row, no overflow.
+          Desktop: same flex row with larger logos and more gap.
+        */}
+        <div className="flex flex-nowrap items-center justify-center gap-3 sm:gap-10 md:gap-14 overflow-hidden">
           {PARTNERS.map((partner) => (
             <div
               key={partner.name}
-              className="flex items-center justify-center transition-all hover:scale-105 duration-300 p-2"
+              className="flex shrink-0 items-center justify-center transition-all hover:scale-105 duration-300"
             >
               <Image
                 src={partner.src}
                 alt={partner.name}
                 width={partner.width}
                 height={partner.height}
-                className="object-contain h-10 sm:h-12 md:h-16 w-auto max-w-[120px] sm:max-w-[150px] md:max-w-[180px]"
+                className="object-contain w-[60px] sm:w-auto h-8 sm:h-12 md:h-16 max-w-[80px] sm:max-w-[140px] md:max-w-[180px]"
               />
             </div>
           ))}

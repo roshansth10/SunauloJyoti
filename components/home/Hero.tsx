@@ -28,19 +28,19 @@ export default function Hero() {
         </div>
 
         {/* Mobile / Tablet Product Image */}
-        <div className="relative z-10 mt-6 ml-auto -mr-4 min-[420px]:-mr-6 sm:-mr-10 w-[calc(100%+1rem)] min-[420px]:w-[calc(100%+1.5rem)] sm:w-[calc(100%+2.5rem)] max-w-none lg:hidden">
+        <div className="relative z-10 mt-6 -mx-4 w-[calc(100%+2rem)] min-[420px]:-mx-6 min-[420px]:w-[calc(100%+3rem)] sm:-mx-10 sm:w-[calc(100%+5rem)] sm:max-w-2xl sm:mx-auto lg:hidden">
           <Link
             href="/products"
-            className="group block relative aspect-[1390/1175] w-full cursor-pointer"
+            className="group block relative aspect-[1414/2000] w-full cursor-pointer"
             aria-label="View Products"
           >
             <Image
-              src="/images/Heroproducts-cropped.png"
+              src="/images/Heroproducts1.png"
               alt="Sunaulo Jyoti spice collection"
               fill
               priority
               sizes="(min-width: 640px) 100vw, 100vw"
-              className="object-contain object-right transition-transform duration-500 ease-out group-hover:scale-[1.03] active:scale-95"
+              className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03] active:scale-95"
             />
           </Link>
         </div>
@@ -57,24 +57,24 @@ export default function Hero() {
           z-10
           hidden
           lg:block
-          lg:w-[62.5vw]
-          xl:w-[58.5vw]
-          2xl:w-[54.5vw]
+          lg:w-[68vw]
+          xl:w-[64vw]
+          2xl:w-[60vw]
           max-w-none
         "
       >
         <Link
           href="/products"
-          className="pointer-events-auto group block relative h-full w-full cursor-pointer"
+          className="pointer-events-auto group block relative h-full w-full cursor-pointer overflow-hidden"
           aria-label="View Products"
         >
           <Image
-            src="/images/Heroproducts-cropped.png"
+            src="/images/Heroproducts1.png"
             alt="Sunaulo Jyoti spice collection"
             fill
             priority
-            sizes="62.5vw"
-            className="object-contain object-right transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            sizes="68vw"
+            className="object-contain object-right scale-[1.5] origin-right transition-transform duration-500 ease-out group-hover:scale-[1.54]"
           />
         </Link>
       </div>
