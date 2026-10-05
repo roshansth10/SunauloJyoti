@@ -9,12 +9,12 @@ export default function TestimonialsCTA() {
           {/* Founders shot */}
           <div className="md:col-span-5">
             <Image
-              src="/images/testimonials/image 114.png"
+              src="/images/testimonials/kanxii.png"
               alt="Jyoti Foods founder presenting the masala collection"
               width={494}
               height={575}
               sizes="(min-width: 1024px) 38vw, 80vw"
-              className="mx-auto w-full max-w-[300px] rotate-1 object-contain min-[420px]:max-w-[340px] md:max-w-none"
+              className="mx-auto w-full max-w-[300px] object-contain min-[420px]:max-w-[340px] md:max-w-none"
             />
           </div>
 

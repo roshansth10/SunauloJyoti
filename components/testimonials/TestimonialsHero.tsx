@@ -12,7 +12,7 @@ export default function TestimonialsHero() {
         height={840}
         priority
         sizes="100vw"
-        className="h-[190px] w-full rotate-[0.7deg] object-cover sm:h-[300px] lg:h-[420px]"
+        className="h-[190px] w-full object-cover sm:h-[300px] lg:h-[420px]"
       />
     </section>
   );

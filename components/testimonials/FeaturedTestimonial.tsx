@@ -20,7 +20,7 @@ export default function FeaturedTestimonial() {
               width={546}
               height={437}
               sizes="(min-width: 1024px) 45vw, 90vw"
-              className="w-full rotate-1 rounded-2xl object-cover shadow-md"
+              className="w-full rounded-2xl object-cover shadow-md"
             />
           </div>
 
