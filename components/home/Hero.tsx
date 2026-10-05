@@ -4,9 +4,9 @@ import Button from "@/components/ui/Button";
 
 export default function Hero() {
   return (
-    <section className="relative w-full overflow-hidden bg-hero-gradient py-12 sm:py-16 lg:py-0 lg:min-h-[620px] flex items-center">
+    <section className="relative w-full overflow-hidden bg-hero-gradient pt-8 pb-5 sm:pt-12 sm:pb-6 lg:py-0 lg:min-h-[620px] flex items-center">
       {/* Main centered container */}
-      <div className="container-px relative mx-auto flex flex-col justify-center w-full max-w-7xl lg:min-h-[620px] py-4 lg:py-12">
+      <div className="container-px relative mx-auto flex flex-col justify-center w-full max-w-7xl lg:min-h-[620px] pt-2 pb-2 lg:py-12">
         {/* Text Content */}
         <div className="relative z-20 flex max-w-xl flex-col gap-4 sm:gap-5 text-left lg:absolute lg:left-0 lg:top-1/2 lg:-translate-y-1/2">
           <h1 className="font-display text-2xl min-[380px]:text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-brand-dark">
@@ -27,11 +27,11 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Mobile / Tablet Product Image */}
-        <div className="relative z-10 mt-6 -mx-4 w-[calc(100%+2rem)] min-[420px]:-mx-6 min-[420px]:w-[calc(100%+3rem)] sm:-mx-10 sm:w-[calc(100%+5rem)] sm:max-w-2xl sm:mx-auto lg:hidden">
+        {/* Mobile / Tablet Product Image (Positioned nicely above hero bottom) */}
+        <div className="relative z-10 mt-6 -mx-4 w-[calc(100%+2rem)] min-[420px]:-mx-6 min-[420px]:w-[calc(100%+3rem)] sm:-mx-10 sm:w-[calc(100%+5rem)] sm:max-w-2xl sm:mx-auto lg:hidden overflow-hidden">
           <Link
             href="/products"
-            className="group block relative aspect-[1414/2000] w-full cursor-pointer"
+            className="group block relative aspect-[1414/1620] w-full cursor-pointer"
             aria-label="View Products"
           >
             <Image
@@ -40,7 +40,7 @@ export default function Hero() {
               fill
               priority
               sizes="(min-width: 640px) 100vw, 100vw"
-              className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03] active:scale-95"
+              className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03] active:scale-95"
             />
           </Link>
         </div>
