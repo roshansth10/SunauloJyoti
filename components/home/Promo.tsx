@@ -1,9 +1,19 @@
+"use client";
+
 import Image from "next/image";
+import { useRef } from "react";
 import Button from "@/components/ui/Button";
+import { useTextReveal } from "@/hooks/useTextReveal";
 
 export default function Promo() {
+  const sectionRef = useRef<HTMLElement>(null);
+  useTextReveal(sectionRef);
+
   return (
-    <section className="relative overflow-hidden bg-white py-12 sm:py-16 lg:py-20">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden bg-white py-12 sm:py-16 lg:py-20 [&_h1]:opacity-0 [&_h2]:opacity-0 [&_h3]:opacity-0 [&_p]:opacity-0"
+    >
       <Image
         src="/images/promo-bg-faded.jpg"
         alt=""

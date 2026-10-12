@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useRef } from "react";
+import { useTextReveal } from "@/hooks/useTextReveal";
 
 // Nabil Bank removed per requirement
 const PARTNERS = [
@@ -29,8 +33,14 @@ const PARTNERS = [
 ];
 
 export default function PaymentPartners() {
+  const sectionRef = useRef<HTMLElement>(null);
+  useTextReveal(sectionRef);
+
   return (
-    <section className="relative overflow-hidden bg-white py-16 sm:py-20 border-t border-neutral-100">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden bg-white py-16 sm:py-20 border-t border-neutral-100 [&_h1]:opacity-0 [&_h2]:opacity-0 [&_h3]:opacity-0 [&_p]:opacity-0"
+    >
       {/* Decorative cardamom seeds — top right */}
       <div className="pointer-events-none absolute right-0 top-0 w-24 sm:w-36 md:w-44 opacity-25 z-0">
         <Image src="/images/3.png" alt="" width={200} height={200} className="object-contain" />

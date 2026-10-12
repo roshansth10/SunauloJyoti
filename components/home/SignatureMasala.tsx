@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useRef } from "react";
 import Button from "@/components/ui/Button";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useTextReveal } from "@/hooks/useTextReveal";
 
 const ITEMS = [
   {
@@ -26,8 +29,15 @@ const ITEMS = [
 ];
 
 export default function SignatureMasala() {
+  const sectionRef = useRef<HTMLElement>(null);
+  useScrollReveal(sectionRef);
+  useTextReveal(sectionRef);
+
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-24">
+    <section
+      ref={sectionRef}
+      className="bg-white py-16 sm:py-20 lg:py-24 [&_h1]:opacity-0 [&_h2]:opacity-0 [&_h3]:opacity-0 [&_p]:opacity-0"
+    >
       <div className="container-px mx-auto max-w-7xl">
         <SectionHeading
           title="Signature Masala Collection"
@@ -38,41 +48,44 @@ export default function SignatureMasala() {
           {ITEMS.map((item) => (
             <div
               key={item.title}
-              className="flex h-full flex-col rounded-[22px] border border-neutral-200 bg-white p-4 shadow-lg shadow-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+              data-reveal="card"
+              className="h-full"
             >
-              {/* ── IMAGE ── */}
-              <div className="sm-img-wrap relative w-full aspect-[4/5] overflow-hidden rounded-[16px]">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover object-center"
-                />
-              </div>
+              <div className="flex h-full flex-col rounded-[22px] border border-neutral-200 bg-white p-4 shadow-lg shadow-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                {/* ── IMAGE ── */}
+                <div className="sm-img-wrap relative w-full aspect-[4/5] overflow-hidden rounded-[16px]">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover object-center"
+                  />
+                </div>
 
-              {/* ── TEXT ── */}
-              <div className="flex flex-1 flex-col gap-5 px-2 pb-2 pt-5">
-                <h3
-                  className="
+                {/* ── TEXT ── */}
+                <div className="flex flex-1 flex-col gap-5 px-2 pb-2 pt-5">
+                  <h3
+                    className="
                     font-display font-bold text-brand-dark leading-[1.15]
                     text-[1.5rem] lg:text-[1.625rem]
                   "
-                >
-                  {item.title}
-                </h3>
-
-                <p className="text-neutral-500 text-[0.9375rem] leading-[1.65]">
-                  {item.description}
-                </p>
-
-                <div className="mt-auto">
-                  <Button
-                    href="/products"
-                    className="px-7 py-3.5 text-[0.9375rem] hover:scale-[1.03] transition-transform duration-200"
                   >
-                    Order Now
-                  </Button>
+                    {item.title}
+                  </h3>
+
+                  <p className="text-neutral-500 text-[0.9375rem] leading-[1.65]">
+                    {item.description}
+                  </p>
+
+                  <div className="mt-auto">
+                    <Button
+                      href="/products"
+                      className="px-7 py-3.5 text-[0.9375rem] hover:scale-[1.03] transition-transform duration-200"
+                    >
+                      Order Now
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -80,8 +93,26 @@ export default function SignatureMasala() {
         </div>
 
         <div className="mt-14 sm:mt-16 flex justify-center">
-          <Button href="/products" variant="outline">
-            View More ⌄
+          <Button
+            href="/products"
+            variant="outline"
+            className="group px-8 py-3.5"
+          >
+            <span className="inline-flex items-center gap-2">
+              View More
+              <svg
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.25"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
           </Button>
         </div>
       </div>

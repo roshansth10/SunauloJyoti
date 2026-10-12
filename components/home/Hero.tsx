@@ -1,10 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
 import Button from "@/components/ui/Button";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useTextReveal } from "@/hooks/useTextReveal";
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  useScrollReveal(sectionRef);
+  useTextReveal(sectionRef, { onLoad: true });
+
   return (
-    <section className="relative w-full overflow-hidden bg-hero-gradient pt-8 pb-5 sm:pt-12 sm:pb-6 lg:py-0 lg:min-h-[620px] flex items-center">
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-hero-gradient pt-8 pb-5 sm:pt-12 sm:pb-6 lg:py-0 lg:min-h-[620px] flex items-center [&_h1]:opacity-0 [&_h2]:opacity-0 [&_h3]:opacity-0 [&_p]:opacity-0"
+    >
       {/* Main centered container */}
       <div className="container-px relative mx-auto flex flex-col justify-center w-full max-w-7xl lg:min-h-[620px] pt-2 pb-2 lg:py-12">
         {/* Text Content */}
@@ -34,14 +46,16 @@ export default function Hero() {
             className="group block relative aspect-[1414/1620] w-full cursor-pointer"
             aria-label="View Products"
           >
-            <Image
-              src="/images/Heroproducts1.png"
-              alt="Sunaulo Jyoti spice collection"
-              fill
-              priority
-              sizes="(min-width: 640px) 100vw, 100vw"
-              className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03] active:scale-95"
-            />
+            <div data-reveal="image" className="absolute inset-0">
+              <Image
+                src="/images/Heroproducts1.png"
+                alt="Sunaulo Jyoti spice collection"
+                fill
+                priority
+                sizes="(min-width: 640px) 100vw, 100vw"
+                className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03] active:scale-95"
+              />
+            </div>
           </Link>
         </div>
       </div>
@@ -68,14 +82,16 @@ export default function Hero() {
           className="pointer-events-auto group block relative h-full w-full cursor-pointer overflow-hidden"
           aria-label="View Products"
         >
-          <Image
-            src="/images/Heroproducts1.png"
-            alt="Sunaulo Jyoti spice collection"
-            fill
-            priority
-            sizes="68vw"
-            className="object-contain object-right scale-[1.5] origin-right transition-transform duration-500 ease-out group-hover:scale-[1.54]"
-          />
+          <div data-reveal="image" className="absolute inset-0">
+            <Image
+              src="/images/Heroproducts1.png"
+              alt="Sunaulo Jyoti spice collection"
+              fill
+              priority
+              sizes="68vw"
+              className="object-contain object-right scale-[1.5] origin-right transition-transform duration-500 ease-out group-hover:scale-[1.54]"
+            />
+          </div>
         </Link>
       </div>
     </section>
