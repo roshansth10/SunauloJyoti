@@ -119,9 +119,9 @@ export default function Footer() {
           <ul className="flex flex-col gap-1.5 sm:gap-2.5">
             {[
               { label: "Testimonials", href: "/testimonials" },
-              { label: "Help & FAQ", href: "/contact" },
-              { label: "Privacy Policy", href: "/" },
-              { label: "Terms and Condition", href: "/" },
+              { label: "Help & FAQ", href: "/help-faq" },
+              { label: "Privacy Policy", href: "/privacy-policy" },
+              { label: "Terms & Conditions", href: "/terms-and-conditions" },
             ].map((link) => (
               <li key={link.label}>
                 <Link
