@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 import Button from "@/components/ui/Button";
 import SectionHeading from "@/components/ui/SectionHeading";
 
@@ -27,126 +26,57 @@ const ITEMS = [
 ];
 
 export default function SignatureMasala() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Lightweight IntersectionObserver-based fade-in; no GSAP dependency added
-    const rows = sectionRef.current?.querySelectorAll<HTMLElement>(".sm-row");
-    if (!rows) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const row = entry.target as HTMLElement;
-            const img = row.querySelector<HTMLElement>(".sm-img-wrap");
-            const txt = row.querySelector<HTMLElement>(".sm-text-wrap");
-
-            if (img) {
-              img.style.transition =
-                "opacity 0.75s ease, transform 0.75s ease";
-              img.style.opacity = "1";
-              img.style.transform = "scale(1)";
-            }
-            if (txt) {
-              txt.style.transition =
-                "opacity 0.75s ease 0.18s, transform 0.75s ease 0.18s";
-              txt.style.opacity = "1";
-              txt.style.transform = "translateY(0)";
-            }
-            observer.unobserve(row);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    rows.forEach((row) => {
-      const img = row.querySelector<HTMLElement>(".sm-img-wrap");
-      const txt = row.querySelector<HTMLElement>(".sm-text-wrap");
-      if (img) {
-        img.style.opacity = "0";
-        img.style.transform = "scale(1.04)";
-      }
-      if (txt) {
-        txt.style.opacity = "0";
-        txt.style.transform = "translateY(20px)";
-      }
-      observer.observe(row);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section className="bg-white py-16 sm:py-20 lg:py-24">
-      <div className="container-px mx-auto max-w-7xl" ref={sectionRef}>
+      <div className="container-px mx-auto max-w-7xl">
         <SectionHeading
           title="Signature Masala Collection"
           subtitle="परम्परागत स्वाद, आधुनिक गुणस्तर"
         />
 
-        {/* Product rows — 80–120px gap between rows on desktop */}
-        <div className="mt-12 sm:mt-16 flex flex-col gap-16 sm:gap-20 lg:gap-24">
-          {ITEMS.map((item, idx) => {
-            const reversed = idx % 2 === 1;
-            return (
-              <div
-                key={item.title}
-                className={`sm-row flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-[72px] ${
-                  reversed ? "lg:flex-row-reverse" : ""
-                }`}
-              >
-                {/* ── IMAGE ── */}
-                <div className="sm-img-wrap w-full lg:w-[45%] shrink-0">
-                  {/* contain so packaging never gets cropped */}
-                  <div className="relative w-full aspect-[4/3] rounded-[22px] overflow-hidden bg-neutral-50 shadow-sm">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      sizes="(min-width: 1024px) 45vw, 100vw"
-                      className="object-contain p-4"
-                    />
-                  </div>
-                </div>
+        <div className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 overflow-hidden">
+          {ITEMS.map((item) => (
+            <div
+              key={item.title}
+              className="flex h-full flex-col rounded-[22px] border border-neutral-200 bg-white p-4 shadow-lg shadow-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+            >
+              {/* ── IMAGE ── */}
+              <div className="sm-img-wrap relative w-full aspect-[4/5] overflow-hidden rounded-[16px]">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  className="object-cover object-center"
+                />
+              </div>
 
-                {/* ── TEXT ── */}
-                <div className="sm-text-wrap flex flex-col gap-5 lg:w-[55%]">
-                  {/* Title ~36–38px desktop, ~28–30px mobile */}
-                  <h3
-                    className="
-                      font-display font-bold text-brand-dark leading-[1.15]
-                      text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem]
-                    "
+              {/* ── TEXT ── */}
+              <div className="flex flex-1 flex-col gap-5 px-2 pb-2 pt-5">
+                <h3
+                  className="
+                    font-display font-bold text-brand-dark leading-[1.15]
+                    text-[1.5rem] lg:text-[1.625rem]
+                  "
+                >
+                  {item.title}
+                </h3>
+
+                <p className="text-neutral-500 text-[0.9375rem] leading-[1.65]">
+                  {item.description}
+                </p>
+
+                <div className="mt-auto">
+                  <Button
+                    href="/products"
+                    className="px-7 py-3.5 text-[0.9375rem] hover:scale-[1.03] transition-transform duration-200"
                   >
-                    {item.title}
-                  </h3>
-
-                  {/* Description ~17–18px desktop, 16px mobile */}
-                  <p
-                    className="
-                      text-neutral-500 leading-[1.65]
-                      text-[1rem] lg:text-[1.0625rem]
-                      max-w-[520px]
-                    "
-                  >
-                    {item.description}
-                  </p>
-
-                  {/* Order Now button — slightly more padding than base */}
-                  <div className="mt-1">
-                    <Button
-                      href="/products"
-                      className="px-7 py-3.5 text-[0.9375rem] hover:scale-[1.03] transition-transform duration-200"
-                    >
-                      Order Now
-                    </Button>
-                  </div>
+                    Order Now
+                  </Button>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
         <div className="mt-14 sm:mt-16 flex justify-center">
