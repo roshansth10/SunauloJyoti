@@ -43,86 +43,138 @@ const STEPS = [
   },
 ];
 
-// Dotted path (same route as before) and its viewBox size
-const VB_W = 800;
-const VB_H = 1450;
-const PATH_D =
-  "M 240 100 C 520 170, 600 300, 560 380 C 520 460, 200 560, 240 660 C 280 760, 600 840, 560 940 C 520 1040, 200 1140, 240 1220 C 280 1300, 400 1360, 400 1420";
+type Pt = { x: number; y: number };
 
-// Distance of an element's top edge from the top of `root`, ignoring any GSAP transforms
-function offsetWithin(el: HTMLElement, root: HTMLElement) {
+// Position of an element inside `root` (ignores GSAP transforms, so it's stable)
+function posWithin(el: HTMLElement, root: HTMLElement): Pt {
+  let x = 0;
   let y = 0;
   let node: HTMLElement | null = el;
   while (node && node !== root) {
+    x += node.offsetLeft;
     y += node.offsetTop;
     node = node.offsetParent as HTMLElement | null;
   }
-  return y;
+  return { x, y };
+}
+
+// Smooth curve through the points: leaves each point sideways, enters the next one downward
+function buildPath(pts: Pt[]) {
+  let d = `M ${pts[0].x} ${pts[0].y}`;
+  for (let i = 1; i < pts.length; i++) {
+    const a = pts[i - 1];
+    const b = pts[i];
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    d += ` C ${a.x + dx * 0.9} ${a.y + dy * 0.18}, ${b.x} ${b.y - dy * 0.35}, ${b.x} ${b.y}`;
+  }
+  return d;
 }
 
 export default function ProductionProcess() {
   const stepsRef = useRef<HTMLDivElement>(null); // the `relative` container around line + steps
+  const svgRef = useRef<SVGSVGElement>(null);
   const revealRef = useRef<SVGPathElement>(null); // mask path that "draws" the line
+  const trackRef = useRef<SVGPathElement>(null); // faint full dotted route
+  const progressRef = useRef<SVGPathElement>(null); // saffron dotted line (revealed by the mask)
   const dotRef = useRef<HTMLDivElement>(null); // glowing dot at the tip of the line
+  const homeRef = useRef<HTMLDivElement>(null); // the Home badge (where the line ends)
   const circleRefs = useRef<(HTMLDivElement | null)[]>([]); // the 5 step images
 
   useEffect(() => {
     const container = stepsRef.current;
+    const svg = svgRef.current;
     const reveal = revealRef.current;
+    const track = trackRef.current;
+    const progress = progressRef.current;
     const dot = dotRef.current;
+    const home = homeRef.current;
     const circles = circleRefs.current.filter(
       (el): el is HTMLDivElement => el !== null,
     );
-    if (!container || !reveal || !dot || circles.length === 0) return;
-
-    const len = reveal.getTotalLength();
-
-    // Reduced motion: show everything immediately, no animation, no dot
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set(reveal, { strokeDasharray: len, strokeDashoffset: 0 });
-      gsap.set(dot, { autoAlpha: 0 });
-      gsap.set(circles, { autoAlpha: 1 });
+    if (
+      !container ||
+      !svg ||
+      !reveal ||
+      !track ||
+      !progress ||
+      !dot ||
+      !home ||
+      circles.length === 0
+    )
       return;
-    }
 
-    gsap.set(reveal, { strokeDasharray: len, strokeDashoffset: len });
+    let len = 1;
+    let thresholds: number[] = [];
+    const state = { p: 0 };
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-    // Convert a point on the path (viewBox units) to pixels inside the container
+    // Move the dot to a point along the path (progress 0–1)
     const placeDot = (p: number) => {
       const pt = reveal.getPointAtLength(len * p);
-      gsap.set(dot, {
-        x: (pt.x / VB_W) * container.clientWidth,
-        y: (pt.y / VB_H) * container.clientHeight,
-      });
+      gsap.set(dot, { x: pt.x, y: pt.y });
     };
 
-    // Path progress (0–1) at which the line reaches a given viewBox y.
-    // The path only ever moves downward, so a binary search works.
-    const progressAtY = (vbY: number) => {
+    // Progress (0–1) at which the line reaches a given y. The path only moves
+    // downward, so a binary search works.
+    const progressAtY = (y: number) => {
       let lo = 0;
       let hi = 1;
       for (let i = 0; i < 24; i++) {
         const mid = (lo + hi) / 2;
-        if (reveal.getPointAtLength(len * mid).y < vbY) lo = mid;
+        if (reveal.getPointAtLength(len * mid).y < y) lo = mid;
         else hi = mid;
       }
       return hi;
     };
 
-    // For each image: the progress at which the line arrives at it
-    // (measured from the real layout, so it stays correct on every screen size)
-    const computeThresholds = () =>
-      circles.map((el) => {
-        const top = offsetWithin(el, container);
-        const triggerY = top + el.offsetHeight * 0.15;
-        const vbY = (triggerY / container.clientHeight) * VB_H;
-        return Math.max(progressAtY(vbY), 0.002);
+    // Build the line from the REAL positions of the circles and the Home badge,
+    // so it connects them exactly on every screen size and ends at Home.
+    const rebuild = () => {
+      const W = container.clientWidth;
+      const H = container.clientHeight;
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+
+      const pts: Pt[] = circles.map((el) => {
+        const o = posWithin(el, container);
+        return { x: o.x + el.offsetWidth / 2, y: o.y + el.offsetHeight / 2 };
+      });
+      const h = posWithin(home, container);
+      pts.push({ x: h.x + home.offsetWidth / 2, y: h.y }); // top-centre of the badge
+
+      const d = buildPath(pts);
+      reveal.setAttribute("d", d);
+      track.setAttribute("d", d);
+      progress.setAttribute("d", d);
+
+      len = reveal.getTotalLength();
+      gsap.set(reveal, {
+        strokeDasharray: len,
+        strokeDashoffset: reduceMotion ? 0 : len * (1 - state.p),
       });
 
-    let thresholds = computeThresholds();
+      // For each image: the progress at which the line arrives at it
+      thresholds = circles.map((el) => {
+        const o = posWithin(el, container);
+        return Math.max(progressAtY(o.y + el.offsetHeight * 0.15), 0.002);
+      });
+
+      placeDot(state.p);
+    };
+
+    rebuild();
+
+    // Reduced motion: finished line, everything visible, no dot, no scroll animation
+    if (reduceMotion) {
+      gsap.set(dot, { autoAlpha: 0 });
+      gsap.set(circles, { autoAlpha: 1 });
+      window.addEventListener("resize", rebuild);
+      return () => window.removeEventListener("resize", rebuild);
+    }
+
     const shown = circles.map(() => false);
-    const state = { p: 0 };
-    placeDot(0);
 
     const ctx = gsap.context(() => {
       // One paused fade-in tween per image; played/reversed as the line passes
@@ -146,11 +198,11 @@ export default function ProductionProcess() {
         ease: "none",
         scrollTrigger: {
           trigger: container,
-          // Functions are re-evaluated on every refresh, so rotating the phone
-          // or resizing the window picks the right values automatically.
-          start: () => (window.innerWidth < 640 ? "top 75%" : "top 55%"),
-          end: () => (window.innerWidth < 640 ? "bottom 80%" : "bottom 75%"),
-          scrub: window.innerWidth < 640 ? 1 : 1.5, // higher = slower, smoother (try 2–3)
+          // Functions are re-evaluated on every refresh (rotate / resize).
+          // Phones get a longer scroll range + more smoothing = a slower line.
+          start: () => (window.innerWidth < 640 ? "top 80%" : "top 55%"),
+          end: () => (window.innerWidth < 640 ? "bottom 60%" : "bottom 75%"),
+          scrub: window.innerWidth < 640 ? 2.2 : 1.5, // higher = slower, smoother
         },
         onUpdate: () => {
           gsap.set(reveal, { strokeDashoffset: len * (1 - state.p) });
@@ -169,15 +221,12 @@ export default function ProductionProcess() {
       });
     }, container);
 
-    // Keep everything aligned after resize / layout changes
-    const onRefresh = () => {
-      thresholds = computeThresholds();
-      placeDot(state.p);
-    };
-    ScrollTrigger.addEventListener("refresh", onRefresh);
+    // Rebuild the line whenever ScrollTrigger refreshes (resize, rotation, fonts…)
+    ScrollTrigger.addEventListener("refresh", rebuild);
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
     return () => {
-      ScrollTrigger.removeEventListener("refresh", onRefresh);
+      ScrollTrigger.removeEventListener("refresh", rebuild);
       ctx.revert();
     };
   }, []);
@@ -242,10 +291,12 @@ export default function ProductionProcess() {
 
         {/* Process Steps */}
         <div className="relative" ref={stepsRef}>
-          {/* Animated dotted curved line — draws step 1 → 5 → Home as you scroll */}
+          {/* Animated dotted curved line. Its path is generated in the effect from the
+              real position of each circle and the Home badge, so it always ends at Home. */}
           <svg
+            ref={svgRef}
             className="absolute inset-0 w-full h-full pointer-events-none"
-            viewBox={`0 0 ${VB_W} ${VB_H}`}
+            viewBox="0 0 800 1450"
             fill="none"
             preserveAspectRatio="none"
             aria-hidden="true"
@@ -258,12 +309,11 @@ export default function ProductionProcess() {
                 maskUnits="userSpaceOnUse"
                 x="0"
                 y="0"
-                width={VB_W}
-                height={VB_H}
+                width="100%"
+                height="100%"
               >
                 <path
                   ref={revealRef}
-                  d={PATH_D}
                   stroke="#fff"
                   strokeWidth="24"
                   strokeLinecap="round"
@@ -274,7 +324,7 @@ export default function ProductionProcess() {
 
             {/* 1. Faint track: the full dotted route, always visible */}
             <path
-              d={PATH_D}
+              ref={trackRef}
               stroke="#D3C7B5"
               strokeWidth="2"
               strokeDasharray="6 6"
@@ -284,7 +334,7 @@ export default function ProductionProcess() {
             {/* 2. Saffron progress line: same dots, revealed progressively by the mask */}
             <g mask="url(#process-path-reveal)">
               <path
-                d={PATH_D}
+                ref={progressRef}
                 stroke="#E08A12"
                 strokeWidth="2.5"
                 strokeDasharray="6 6"
@@ -353,9 +403,12 @@ export default function ProductionProcess() {
               );
             })}
 
-            {/* End Point: Home Icon Badge */}
+            {/* End Point: Home Icon Badge — the dotted line stops at its top edge */}
             <div className="flex flex-col items-center justify-center pt-4 md:pt-8">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 border-[#A8947C] bg-[#FAF8F5] flex flex-col items-center justify-center shadow-sm text-[#7C6853]">
+              <div
+                ref={homeRef}
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 border-[#A8947C] bg-[#FAF8F5] flex flex-col items-center justify-center shadow-sm text-[#7C6853]"
+              >
                 <svg
                   className="w-8 h-8 sm:w-9 sm:h-9"
                   fill="none"
