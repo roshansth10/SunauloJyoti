@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useRef } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 interface FeaturedItem {
   id: string;
@@ -32,6 +36,9 @@ const FEATURED_ITEMS: FeaturedItem[] = [
 ];
 
 export default function FeaturedProduct() {
+  const ref = useRef<HTMLElement>(null);
+  useReveal(ref);
+
   const getWhatsAppLink = (title: string) => {
     return `https://wa.me/9869246570?text=${encodeURIComponent(
       `Hey, I would like to order ${title} from Sunaulo Jyoti`
@@ -39,14 +46,14 @@ export default function FeaturedProduct() {
   };
 
   return (
-    <section className="bg-white py-12 sm:py-16">
+    <section ref={ref} className="bg-white py-12 sm:py-16">
       <div className="container-px mx-auto max-w-7xl">
         {/* Section Heading & Subtitle */}
         <div className="max-w-3xl">
-          <h2 className="font-display text-2xl font-bold text-brand-dark sm:text-3xl lg:text-4xl">
+          <h2 data-reveal="heading" className="opacity-0 font-display text-2xl font-bold text-brand-dark sm:text-3xl lg:text-4xl">
             Featured Product
           </h2>
-          <p className="mt-2 text-sm text-neutral-600 sm:text-base leading-relaxed">
+          <p data-reveal="text" className="opacity-0 mt-2 text-sm text-neutral-600 sm:text-base leading-relaxed">
             Mix Masala is one of our most-loved spice blends, known for its rich
             aroma and authentic taste that enhances every meal.
           </p>
@@ -57,35 +64,38 @@ export default function FeaturedProduct() {
           {FEATURED_ITEMS.map((item) => (
             <div
               key={item.id}
-              className="group flex flex-col justify-between rounded-2xl border border-amber-100/90 bg-[#FDF9F0] p-4 sm:p-5 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+              data-reveal="card"
+              className="opacity-0 h-full"
             >
-              <div>
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-white shadow-xs">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
+              <div className="group flex h-full flex-col justify-between rounded-2xl border border-amber-100/90 bg-[#FDF9F0] p-4 sm:p-5 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+                <div>
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-white shadow-xs">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <h3 className="mt-4 font-display text-lg font-bold text-brand-dark sm:text-xl">
+                    {item.title}
+                  </h3>
+                  <p data-reveal="text" className="opacity-0 mt-2 text-xs text-neutral-600 sm:text-sm leading-relaxed">
+                    {item.description}
+                  </p>
                 </div>
-                <h3 className="mt-4 font-display text-lg font-bold text-brand-dark sm:text-xl">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs text-neutral-600 sm:text-sm leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
 
-              <div className="mt-5">
-                <a
-                  href={getWhatsAppLink(item.title)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block rounded-lg bg-brand-orange px-5 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95"
-                >
-                  Order Now
-                </a>
+                <div className="mt-5">
+                  <a
+                    href={getWhatsAppLink(item.title)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block rounded-lg bg-brand-orange px-5 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95"
+                  >
+                    Order Now
+                  </a>
+                </div>
               </div>
             </div>
           ))}

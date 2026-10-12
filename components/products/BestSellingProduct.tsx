@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 interface BestSellerItem {
   id: string;
@@ -38,7 +39,9 @@ const BEST_SELLERS: BestSellerItem[] = [
 ];
 
 export default function BestSellingProduct() {
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  useReveal(sectionRef);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
@@ -70,14 +73,15 @@ export default function BestSellingProduct() {
   };
 
   return (
-    <section className="bg-white py-12 sm:py-16">
+    <section ref={sectionRef} className="bg-white py-12 sm:py-16">
       <div className="container-px mx-auto max-w-7xl">
         {/* Section Heading matching screenshot */}
-        <h2 className="font-display text-2xl font-bold text-brand-dark sm:text-3xl lg:text-4xl">
+        <h2 data-reveal="heading" className="opacity-0 font-display text-2xl font-bold text-brand-dark sm:text-3xl lg:text-4xl">
           Bestselling Product
         </h2>
 
         {/* Product cards: one scrollable row, left to right, with arrow indicators */}
+        <div data-reveal="card" className="opacity-0">
         <div className="relative mt-8">
           <button
             type="button"
@@ -146,6 +150,7 @@ export default function BestSellingProduct() {
               </div>
             ))}
           </div>
+        </div>
         </div>
       </div>
     </section>

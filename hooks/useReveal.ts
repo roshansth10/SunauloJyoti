@@ -18,6 +18,10 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
  *   button  → fade in + slide up
  *   card    → fade in + slide up (staggered when several appear together)
  *   image   → slide in from the right + fade (staggered)
+ *   fade    → plain fade in, NO movement (stays exactly in its original position)
+ *
+ * Text inside a data-reveal="card" automatically waits for its card to start
+ * appearing, so the description never animates inside an invisible card.
  *
  * Pass { onLoad: true } for content that is visible at the top of the page
  * (e.g. a hero): it plays in order on page load instead of on scroll.
@@ -71,13 +75,28 @@ export function useReveal(
       );
 
       // Timing: in order on load, or when each element scrolls into view
-      const when = (el: HTMLElement, i: number): gsap.TweenVars =>
+      const when = (el: HTMLElement, i: number, extra = 0): gsap.TweenVars =>
         onLoad
-          ? { delay: LOAD_DELAY + i * LOAD_STEP }
-          : { scrollTrigger: { trigger: el, start: START, once: true } };
+          ? { delay: LOAD_DELAY + i * LOAD_STEP + extra }
+          : {
+              delay: extra,
+              scrollTrigger: { trigger: el, start: START, once: true },
+            };
 
       items.forEach((el, i) => {
         const kind = el.dataset.reveal;
+
+        // Text inside a card starts a moment after the card itself
+        const card = el.closest<HTMLElement>('[data-reveal="card"]');
+        const extra =
+          card && card !== el
+            ? 0.3 +
+              Math.min(
+                Array.from(card.parentElement?.children ?? []).indexOf(card),
+                4,
+              ) *
+                STAGGER
+            : 0;
 
         if (kind === "heading" || kind === "text") {
           // Nepali text: animate as a whole (never split Devanagari)
@@ -90,7 +109,7 @@ export function useReveal(
                 y: 0,
                 duration: 0.8,
                 ease: "power2.out",
-                ...when(el, i),
+                ...when(el, i, extra),
               },
             );
             return;
@@ -114,7 +133,7 @@ export function useReveal(
                   duration: isHeading ? 0.9 : 0.8,
                   stagger: isHeading ? 0.08 : 0.1,
                   ease: "power3.out",
-                  ...when(el, i),
+                  ...when(el, i, extra),
                 });
               },
             }),
@@ -130,6 +149,13 @@ export function useReveal(
               ease: "power3.out",
               ...when(el, i),
             },
+          );
+        } else if (kind === "fade") {
+          // Pure opacity fade: no x / y / scale, so it stays in its original position
+          gsap.fromTo(
+            el,
+            { autoAlpha: 0 },
+            { autoAlpha: 1, duration: 1.2, ease: "power2.out", ...when(el, i) },
           );
         } else if (kind === "card" || kind === "image") {
           if (onLoad) {

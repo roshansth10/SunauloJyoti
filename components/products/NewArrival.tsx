@@ -1,12 +1,19 @@
+"use client";
+
 import Image from "next/image";
+import { useRef } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 export default function NewArrival() {
+  const ref = useRef<HTMLElement>(null);
+  useReveal(ref);
+
   const whatsappHref = `https://wa.me/9869246570?text=${encodeURIComponent(
     "Hello Sunaulo Jyoti, I would like to order the New Arrival Jyoti Special Black Pepper!"
   )}`;
 
   return (
-    <section className="bg-white py-6 sm:py-10">
+    <section ref={ref} className="bg-white py-6 sm:py-10">
       <div className="container-px mx-auto max-w-7xl">
         <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-[#FCF6D8] shadow-xs">
           {/* Top-left: image 15 (nudged up by the asset's 28.75% transparent top padding
@@ -50,26 +57,28 @@ export default function NewArrival() {
           <div className="relative z-20 grid min-h-[380px] sm:min-h-[420px] lg:min-h-[460px] items-center lg:grid-cols-12">
             {/* Center Content: Centered text and Order Now button */}
             <div className="flex flex-col items-center justify-center px-6 py-10 text-center sm:py-12 lg:col-span-7 lg:pl-16 lg:pr-8">
-              <h2 className="font-display text-3xl font-bold tracking-tight text-[#1F140A] sm:text-4xl md:text-5xl">
+              <h2 data-reveal="heading" className="opacity-0 font-display text-3xl font-bold tracking-tight text-[#1F140A] sm:text-4xl md:text-5xl">
                 New Arrival
               </h2>
 
-              <h3 className="mt-3 sm:mt-4 font-display text-base font-bold text-[#1F140A] sm:text-xl md:text-[22px]">
+              <h3 data-reveal="text" className="opacity-0 mt-3 sm:mt-4 font-display text-base font-bold text-[#1F140A] sm:text-xl md:text-[22px]">
                 Introducing Jyoti&apos;s Special Black Pepper
               </h3>
 
-              <p className="mt-2 max-w-md text-xs sm:text-sm md:text-base text-[#6B5E52] leading-relaxed">
+              <p data-reveal="text" className="opacity-0 mt-2 max-w-md text-xs sm:text-sm md:text-base text-[#6B5E52] leading-relaxed">
                 Crafted with premium spices to make every cup warm, flavorful, and refreshing.
               </p>
 
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-2xl bg-[#E2872E] px-8 py-2.5 sm:mt-8 sm:px-10 sm:py-3 text-sm sm:text-base font-semibold text-white shadow-sm transition-all hover:bg-[#C96F05] active:scale-95"
-              >
-                Order Now
-              </a>
+              <div data-reveal="button" className="opacity-0 mt-6 sm:mt-8">
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-[44px] items-center justify-center rounded-2xl bg-[#E2872E] px-8 py-2.5 sm:px-10 sm:py-3 text-sm sm:text-base font-semibold text-white shadow-sm transition-all hover:bg-[#C96F05] active:scale-95"
+                >
+                  Order Now
+                </a>
+              </div>
             </div>
 
             {/* Right side: floating pods (image 100) and woman with spice tray (sasu) */}
@@ -87,7 +96,7 @@ export default function NewArrival() {
               </div>
 
               {/* Sasu image */}
-              <div className="relative aspect-[449/511] w-full max-w-[280px] sm:max-w-[380px] lg:max-w-[440px] pt-4 sm:pt-6">
+              <div data-reveal="fade" className="opacity-0 relative aspect-[449/511] w-full max-w-[280px] sm:max-w-[380px] lg:max-w-[440px] pt-4 sm:pt-6">
                 <Image
                   src="/images/Product Img/sasu.png"
                   alt="Introducing Jyoti's Special Black Pepper with spice collection"

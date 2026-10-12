@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 export interface ProductItem {
   id: string;
@@ -147,8 +148,10 @@ function ProductTile({ product, sizes, className = "" }: ProductTileProps) {
 }
 
 export default function Categories() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const trackRef = useRef<HTMLDivElement>(null);
+  useReveal(sectionRef);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
@@ -188,15 +191,15 @@ export default function Categories() {
   };
 
   return (
-    <section className="bg-white py-12 sm:py-16">
+    <section ref={sectionRef} className="bg-white py-12 sm:py-16">
       <div className="container-px mx-auto max-w-7xl">
         {/* Section Heading matching design */}
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <h2 className="font-display text-2xl font-bold text-brand-dark sm:text-3xl lg:text-4xl">
+            <h2 data-reveal="heading" className="opacity-0 font-display text-2xl font-bold text-brand-dark sm:text-3xl lg:text-4xl">
               Product Categories
             </h2>
-            <p className="mt-1 text-sm text-neutral-500">
+            <p data-reveal="text" className="opacity-0 mt-1 text-sm text-neutral-500">
               Browse our complete range of freshly packed, authentic Jyoti spices and salts
             </p>
           </div>
@@ -224,6 +227,7 @@ export default function Categories() {
         </div>
 
         {/* Product cards: one scrollable row, left to right, with arrow controls */}
+        <div data-reveal="card" className="opacity-0">
         <div className="relative mt-8">
           <button
             type="button"
@@ -268,6 +272,7 @@ export default function Categories() {
               />
             ))}
           </div>
+        </div>
         </div>
 
       </div>

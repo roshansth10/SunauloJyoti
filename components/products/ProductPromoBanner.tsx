@@ -1,13 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 export default function ProductPromoBanner() {
+  const ref = useRef<HTMLElement>(null);
+  useReveal(ref);
+
   const whatsappHref = `https://wa.me/9869246570?text=${encodeURIComponent(
     "Hello Sunaulo Jyoti, I would like to claim 20% off for my first online order!"
   )}`;
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-r from-[#FDEBA2] via-[#FEF0B2] to-[#FCE89B] py-8 sm:py-11 border-b border-amber-200/60 shadow-xs">
+    <section ref={ref} className="relative overflow-hidden bg-gradient-to-r from-[#FDEBA2] via-[#FEF0B2] to-[#FCE89B] py-8 sm:py-11 border-b border-amber-200/60 shadow-xs">
       {/* Decorative Image 10: Bigger, pinned to the very edgest top-left part */}
       <div className="pointer-events-none absolute -top-1 -left-1 z-10">
         <Image
@@ -62,22 +69,24 @@ export default function ProductPromoBanner() {
           </div>
 
           {/* Offer text: bold 20% OFF and slightly dimmer FOR FIRST ONLINE ORDER */}
-          <h2 className="font-display text-2xl font-bold tracking-tight text-brand-dark sm:text-3xl md:text-[34px]">
+          <h2 data-reveal="heading" className="opacity-0 font-display text-2xl font-bold tracking-tight text-brand-dark sm:text-3xl md:text-[34px]">
             20% OFF
           </h2>
-          <p className="mt-1 font-display text-xs font-semibold text-black sm:text-sm md:text-base">
+          <p data-reveal="text" className="opacity-0 mt-1 font-display text-xs font-semibold text-black sm:text-sm md:text-base">
             For First Online Order
           </p>
         </div>
 
-        <Link
-          href={whatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-3.5 inline-flex min-h-[44px] items-center justify-center rounded-md bg-brand-orange px-6 py-2 text-xs sm:min-h-0 sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95"
-        >
-          Order Now
-        </Link>
+        <div data-reveal="button" className="opacity-0 mt-3.5">
+          <Link
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-brand-orange px-6 py-2 text-xs sm:min-h-0 sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-orange-dark active:scale-95"
+          >
+            Order Now
+          </Link>
+        </div>
       </div>
     </section>
   );
