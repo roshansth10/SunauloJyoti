@@ -94,7 +94,7 @@ export default function Preloader() {
       }, 40);
     }
 
-    // Trigger background music (slow-time-noir-film) to start at full volume
+    // Trigger background music (ambient-passing) to start at full volume
     if (typeof window !== "undefined") {
       window.dispatchEvent(
         new CustomEvent("sunaulo:preloader-finished", {

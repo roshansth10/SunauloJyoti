@@ -1,17 +1,144 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 export default function BackgroundMusic() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  const audioRef = useRef<HTMLAudioElement>(null);
+  // Web Audio API refs for seamless, gapless looping
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const audioBufferRef = useRef<AudioBuffer | null>(null);
+  const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const isWebAudioLoadedRef = useRef(false);
+  const shouldPlayOnLoadRef = useRef(false);
+
+  // Fallback HTML5 Audio element ref
+  const fallbackAudioRef = useRef<HTMLAudioElement>(null);
   const fadeIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Start music at full volume (1.0), with smooth initial ramp
-  const startMusic = (withGentleRamp = true) => {
-    const audio = audioRef.current;
+  // Initialize Web Audio Context and load ambient-passing.mp3
+  const initWebAudio = useCallback(async () => {
+    if (typeof window === "undefined") return;
+
+    try {
+      if (!audioCtxRef.current) {
+        const AudioContextClass =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (!AudioContextClass) return;
+
+        const ctx = new AudioContextClass();
+        audioCtxRef.current = ctx;
+
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(0, ctx.currentTime);
+        gainNode.connect(ctx.destination);
+        gainNodeRef.current = gainNode;
+      }
+
+      if (audioCtxRef.current.state === "suspended") {
+        await audioCtxRef.current.resume();
+      }
+
+      if (!audioBufferRef.current && !isWebAudioLoadedRef.current) {
+        const res = await fetch("/Music/ambient-passing.mp3");
+        const arrayBuffer = await res.arrayBuffer();
+        const decodedBuffer = await audioCtxRef.current.decodeAudioData(arrayBuffer);
+        audioBufferRef.current = decodedBuffer;
+        isWebAudioLoadedRef.current = true;
+
+        // If music was requested while loading buffer, start now
+        if (shouldPlayOnLoadRef.current) {
+          shouldPlayOnLoadRef.current = false;
+          playWebAudio(true);
+        }
+      }
+    } catch (err) {
+      console.warn("Web Audio API init / decode failed, falling back to HTML5 audio:", err);
+    }
+  }, []);
+
+  // Web Audio playback with sample-accurate seamless looping
+  const playWebAudio = (withGentleRamp = true) => {
+    const ctx = audioCtxRef.current;
+    const buffer = audioBufferRef.current;
+    const gainNode = gainNodeRef.current;
+
+    if (!ctx || !buffer || !gainNode) return false;
+
+    try {
+      if (ctx.state === "suspended") {
+        ctx.resume();
+      }
+
+      // Stop previous source if playing
+      if (sourceNodeRef.current) {
+        try {
+          sourceNodeRef.current.stop();
+          sourceNodeRef.current.disconnect();
+        } catch {
+          // ignore already stopped
+        }
+        sourceNodeRef.current = null;
+      }
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true; // 100% gapless, sample-accurate loop
+      source.connect(gainNode);
+
+      const now = ctx.currentTime;
+      gainNode.gain.cancelScheduledValues(now);
+
+      if (withGentleRamp) {
+        gainNode.gain.setValueAtTime(0, now);
+        gainNode.gain.linearRampToValueAtTime(1.0, now + 2.0); // smooth 2s ramp
+      } else {
+        gainNode.gain.setValueAtTime(1.0, now);
+      }
+
+      source.start(0);
+      sourceNodeRef.current = source;
+      setIsPlaying(true);
+      return true;
+    } catch (err) {
+      console.warn("Error starting Web Audio source:", err);
+      return false;
+    }
+  };
+
+  const stopWebAudio = () => {
+    const ctx = audioCtxRef.current;
+    const gainNode = gainNodeRef.current;
+
+    if (gainNode && ctx) {
+      try {
+        const now = ctx.currentTime;
+        gainNode.gain.cancelScheduledValues(now);
+        gainNode.gain.linearRampToValueAtTime(0, now + 0.15);
+        setTimeout(() => {
+          if (sourceNodeRef.current) {
+            try {
+              sourceNodeRef.current.stop();
+              sourceNodeRef.current.disconnect();
+            } catch {
+              // ignore
+            }
+            sourceNodeRef.current = null;
+          }
+        }, 160);
+      } catch {
+        // ignore
+      }
+    }
+    setIsPlaying(false);
+  };
+
+  // Fallback playback via HTML5 Audio element
+  const playFallbackAudio = (withGentleRamp = true) => {
+    const audio = fallbackAudioRef.current;
     if (!audio) return;
 
     if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
@@ -23,7 +150,6 @@ export default function BackgroundMusic() {
         playPromise
           .then(() => {
             setIsPlaying(true);
-            // Smoothly ramp up to 100% full volume over 2 seconds
             let currentVol = 0;
             fadeIntervalRef.current = setInterval(() => {
               if (!audio) {
@@ -40,7 +166,7 @@ export default function BackgroundMusic() {
             }, 80);
           })
           .catch((err) => {
-            console.warn("Background music autoplay was blocked:", err);
+            console.warn("Fallback background music autoplay blocked:", err);
             setIsPlaying(false);
           });
       }
@@ -51,16 +177,15 @@ export default function BackgroundMusic() {
         playPromise
           .then(() => setIsPlaying(true))
           .catch((err) => {
-            console.warn("Audio play error:", err);
+            console.warn("Fallback audio play error:", err);
             setIsPlaying(false);
           });
       }
     }
   };
 
-  // Stop music immediately on toggle OFF
-  const stopMusic = () => {
-    const audio = audioRef.current;
+  const stopFallbackAudio = () => {
+    const audio = fallbackAudioRef.current;
     if (!audio) return;
 
     if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
@@ -68,17 +193,53 @@ export default function BackgroundMusic() {
     setIsPlaying(false);
   };
 
-  // Direct ON / OFF toggle on click
+  // Unified start/stop controllers
+  const startMusic = (withGentleRamp = true) => {
+    // If Web Audio buffer is ready, use high-fidelity seamless engine
+    if (isWebAudioLoadedRef.current && audioBufferRef.current) {
+      const ok = playWebAudio(withGentleRamp);
+      if (ok) return;
+    }
+
+    // If Web Audio is currently fetching/decoding, flag to start as soon as it's decoded
+    if (audioCtxRef.current && !isWebAudioLoadedRef.current) {
+      shouldPlayOnLoadRef.current = true;
+    }
+
+    // Also start fallback HTML5 audio in parallel if Web Audio isn't ready
+    playFallbackAudio(withGentleRamp);
+  };
+
+  const stopMusic = () => {
+    shouldPlayOnLoadRef.current = false;
+    stopWebAudio();
+    stopFallbackAudio();
+  };
+
+  // Toggle button handler
   const toggleMusic = () => {
     if (isPlaying) {
       stopMusic();
     } else {
-      startMusic(false); // Instant full volume ON
+      // Ensure audio context is initialized / resumed on user click
+      initWebAudio();
+      startMusic(false); // Immediate full-volume ON when user manually clicks toggle
     }
   };
 
   useEffect(() => {
-    // Listen for preloader completion event
+    // Preload audio and initialize AudioContext on user first interaction in preloader
+    const handleExperienceSelected = (e: Event) => {
+      const customEvent = e as CustomEvent<{ withSound?: boolean }>;
+      if (customEvent.detail?.withSound !== false) {
+        initWebAudio();
+        if (fallbackAudioRef.current) {
+          fallbackAudioRef.current.load();
+        }
+      }
+    };
+
+    // When preloader finishes, begin seamless background ambient music
     const handlePreloaderFinished = (e: Event) => {
       const customEvent = e as CustomEvent<{ withSound?: boolean }>;
       const shouldPlayWithSound = customEvent.detail?.withSound !== false;
@@ -86,39 +247,45 @@ export default function BackgroundMusic() {
       setIsReady(true);
 
       if (shouldPlayWithSound) {
-        // Start slow-time-noir-film music at full volume
         startMusic(true);
       }
     };
 
-    // Preload audio when user interacts with initial screen
-    const handleExperienceSelected = (e: Event) => {
-      const customEvent = e as CustomEvent<{ withSound?: boolean }>;
-      if (customEvent.detail?.withSound && audioRef.current) {
-        audioRef.current.load();
-      }
-    };
-
-    window.addEventListener("sunaulo:preloader-finished", handlePreloaderFinished);
     window.addEventListener("sunaulo:experience-selected", handleExperienceSelected);
+    window.addEventListener("sunaulo:preloader-finished", handlePreloaderFinished);
 
     return () => {
-      window.removeEventListener("sunaulo:preloader-finished", handlePreloaderFinished);
       window.removeEventListener("sunaulo:experience-selected", handleExperienceSelected);
+      window.removeEventListener("sunaulo:preloader-finished", handlePreloaderFinished);
       if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+      if (sourceNodeRef.current) {
+        try {
+          sourceNodeRef.current.stop();
+          sourceNodeRef.current.disconnect();
+        } catch {
+          // ignore
+        }
+      }
+      if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
+        try {
+          audioCtxRef.current.close();
+        } catch {
+          // ignore
+        }
+      }
     };
-  }, []);
+  }, [initWebAudio]);
 
   return (
     <>
-      {/* Hidden audio element pointing to slow-time-noir-film */}
+      {/* Fallback hidden HTML5 audio element pointing to ambient-passing.mp3 */}
       <audio
-        ref={audioRef}
+        ref={fallbackAudioRef}
         loop
         preload="auto"
         aria-hidden="true"
       >
-        <source src="/Music/slow-time-noir-film.mp3" type="audio/mpeg" />
+        <source src="/Music/ambient-passing.mp3" type="audio/mpeg" />
       </audio>
 
       {/* Floating Music Toggle (ON / OFF) at bottom-left */}
