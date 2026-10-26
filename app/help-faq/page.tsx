@@ -328,7 +328,7 @@ export default function HelpFaqPage() {
                   rel="noopener noreferrer"
                   className="text-brand-orange hover:underline font-medium"
                 >
-                  https://sunaulojyoti.vercel.app/
+                  https://jyotifoodproduct.com.np/
                 </a>
               </p>
             </div>

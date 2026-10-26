@@ -60,12 +60,12 @@ export default function TermsAndConditionsPage() {
               Welcome to Jyoti Foods, operating under the Sunaulo Jyoti brand. These Terms &amp;
               Conditions govern your access to and use of{" "}
               <a
-                href="https://sunaulojyoti.vercel.app/"
+                href="https://jyotifoodproduct.com.np/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-brand-orange hover:underline font-medium"
               >
-                https://sunaulojyoti.vercel.app/
+                https://jyotifoodproduct.com.np/
               </a>{" "}
               and any enquiries or purchases made through the ordering channels offered by us.
             </p>
@@ -135,12 +135,12 @@ export default function TermsAndConditionsPage() {
               <p>
                 <strong className="text-brand-dark">Website:</strong>{" "}
                 <a
-                  href="https://sunaulojyoti.vercel.app/"
+                  href="https://jyotifoodproduct.com.np/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-brand-orange hover:underline font-medium"
                 >
-                  https://sunaulojyoti.vercel.app/
+                 https://jyotifoodproduct.com.np/
                 </a>
               </p>
             </div>
@@ -579,12 +579,12 @@ export default function TermsAndConditionsPage() {
               <p>
                 Website:{" "}
                 <a
-                  href="https://sunaulojyoti.vercel.app/"
+                  href="https://jyotifoodproduct.com.np/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-brand-orange hover:underline font-medium"
                 >
-                  https://sunaulojyoti.vercel.app/
+                  https://jyotifoodproduct.com.np/
                 </a>
               </p>
             </div>

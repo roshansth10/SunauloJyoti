@@ -67,7 +67,7 @@ export default function PrivacyPolicyPage() {
                 rel="noopener noreferrer"
                 className="text-brand-orange hover:underline font-medium"
               >
-                https://sunaulojyoti.vercel.app/
+                https://jyotifoodproduct.com.np/
               </a>
               , contact us, submit an enquiry, or place an order.
             </p>
