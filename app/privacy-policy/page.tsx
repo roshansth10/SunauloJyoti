@@ -62,7 +62,7 @@ export default function PrivacyPolicyPage() {
               This Privacy Policy explains how we collect, use, store, disclose,
               and protect personal information when you visit{" "}
               <a
-                href="https://sunaulojyoti.vercel.app/"
+                href="https://jyotifoodproduct.com.np/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-brand-orange hover:underline font-medium"
@@ -435,12 +435,12 @@ export default function PrivacyPolicyPage() {
               <p>
                 Website:{" "}
                 <a
-                  href="https://sunaulojyoti.vercel.app/"
+                  href="https://jyotifoodproduct.com.np/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-brand-orange hover:underline font-medium"
                 >
-                  https://sunaulojyoti.vercel.app/
+                  https://jyotifoodproduct.com.np/
                 </a>
               </p>
             </div>
